@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anamnese Nutricional Digital - RFM</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Biblioteca PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#10B981', 
+                        secondary: '#065F46',
+                        background: '#F3F4F6',
+                        surface: '#FFFFFF',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F3F4F6;
+            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Animações */
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hover-scale {
+            transition: transform 0.2s;
+        }
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Checkbox customizado */
+        .checkbox-wrapper input:checked + div {
+            background-color: #10B981;
+            border-color: #10B981;
+        }
+        .checkbox-wrapper input:checked + div svg {
+            display: block;
+        }
+
+        /* Animação para campos 'Outros' */
+        .other-input {
+            display: none;
+            margin-top: 8px;
+            animation: slideDown 0.3s ease-out;
+        }
+        .other-input.active {
+            display: block;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* PDF Styles */
+        #pdf-container {
+            display: none;
+            background: white;
+            padding: 40px;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+        }
+        #pdf-container h2 { border-bottom: 2px solid #10B981; padding-bottom: 5px; margin-top: 20px; color: #065F46; }
+        #pdf-container h3 { color: #10B981; margin-top: 15px; font-size: 14px; text-transform: uppercase; }
+        #pdf-container p { margin-bottom: 5px; font-size: 12px; }
+        #pdf-container strong { color: #1F2937; }
+        .pdf-section { margin-bottom: 15px; page-break-inside: avoid; }
+    </style>
+</head>
+<body class="text-gray-700 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <!-- Sigla RFM -->
+                <div class="bg-primary text-white font-bold rounded-lg p-2 text-xl tracking-widest shadow-md">
+                    RFM
+                </div>
+                <h1 class="text-xl font-bold text-gray-800 tracking-tight ml-2">Anamnese Nutricional</h1>
+            </div>
+            <div class="text-sm text-gray-500 hidden sm:block">Nutrição Inteligente</div>
+        </div>
+        <!-- Barra de Progresso -->
+        <div class="w-full bg-gray-200 h-1.5">
+            <div id="progress-bar" class="bg-primary h-1.5 transition-all duration-500" style="width: 0%"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-3xl">
+        
+        <form id="anamneseForm" onsubmit="event.preventDefault()">
+            
+            <!-- SEÇÃO 1: Dados Pessoais -->
+            <div class="step-content active" data-step="1">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
+                    <h2 class="text-2xl font-bold text-secondary mb-2">Vamos nos conhecer?</h2>
+                    <p class="text-gray-500 mb-6">Preencha seus dados básicos para iniciarmos o perfil.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                            <input type="text" name="nome" required class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors placeholder-gray-400" placeholder="Ex: Maria da Silva">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Idade</label>
+                            <input type="number" name="idade" class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors" placeholder="Anos">
+                        </div>
+                        
+                        <!-- Nova pergunta Moradia -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Mora com quantas pessoas?</label>
+                            <select name="moradia" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                <option value="">Selecione...</option>
+                                <option value="Sozinho(a)">Moro sozinho(a)</option>
+                                <option value="1 pessoa">Com 1 pessoa</option>
+                                <option value="2 pessoas">Com 2 pessoas</option>
+                                <option value="3+ pessoas">Com 3 ou mais pessoas</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Altura (cm)</label>
+                            <input type="number" name="altura" class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors" placeholder="Ex: 165">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Peso Atual (kg)</label>
+                            <input type="number" name="peso" step="0.1" class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors" placeholder="Ex: 70.5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO 2: Histórico e Objetivos -->
+            <div class="step-content" data-step="2">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
+                    <h2 class="text-2xl font-bold text-secondary mb-2">Histórico & Objetivos</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Qual seu principal objetivo?</label>
+                            <textarea name="objetivo" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Ex: Emagrecer, ganhar massa muscular..."></textarea>
+                        </div>
+
+                        <!-- Nova pergunta expectativa -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">O que você espera conseguir com a minha ajuda?</label>
+                            <textarea name="expectativa_ajuda" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Ex: Melhorar minha relação com a comida, ter mais disciplina..."></textarea>
+                        </div>
+                        
+                        <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                            <label class="block text-sm font-medium text-green-800 mb-1"><i class="fa-solid fa-bullseye mr-1"></i> Quantos kg desejaria perder ou ganhar daqui a 6 meses?</label>
+                            <input type="text" name="meta_peso" class="w-full px-4 py-2 border border-green-200 rounded-lg" placeholder="Ex: Quero perder 5kg no total...">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Histórico de peso</label>
+                            <textarea name="historico_peso" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Ex: Sempre foi magro (a)? O peso atual te incomoda sempre?"></textarea>
+                        </div>
+
+                         <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Qual sua maior dificuldade nesse processo de mudança?</label>
+                            <textarea name="dificuldade_mudanca" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Ex: Doce, ansiedade, falta de tempo..."></textarea>
+                        </div>
+
+                        <!-- Estresse -->
+                        <div class="flex items-center gap-4 bg-yellow-50 p-3 rounded-lg">
+                            <i class="fa-solid fa-bolt text-yellow-500 text-xl animate-pulse"></i>
+                            <div class="w-full">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Você se considera uma pessoa estressada?</label>
+                                <select name="estressada" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                                    <option value="">Selecione...</option>
+                                    <option value="sim_muito">Sim, muito estressada</option>
+                                    <option value="sim_as_vezes">As vezes</option>
+                                    <option value="nao">Não, sou tranquila</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Doenças diagnosticadas</label>
+                                <input type="text" name="doencas" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Diabetes, Hipertensão...">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Medicamentos em uso</label>
+                                <input type="text" name="medicamentos" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Nome">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1"><i class="fa-solid fa-battery-quarter mr-1 text-red-400"></i> Sente fraqueza ou desânimo?</label>
+                                <input type="text" name="sente_fraca" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Ex: Sim, no final do dia...">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1"><i class="fa-solid fa-file-medical mr-1 text-blue-400"></i> Costuma fazer exames?</label>
+                                <input type="text" name="exames" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Ex: Fiz há 6 meses...">
+                            </div>
+                        </div>
+
+                        <!-- Investimento -->
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-2">
+                             <label class="block text-sm font-bold text-blue-800 mb-2"><i class="fa-solid fa-piggy-bank mr-2"></i>Quanto você está disposto(a) a investir em você hoje?</label>
+                             <select name="investimento" class="w-full px-4 py-2 border border-white rounded-lg shadow-sm toggle-other" data-target="investimento_outro">
+                                <option value="">Selecione...</option>
+                                <option value="Baixo">O mínimo possível</option>
+                                <option value="Medio">Um valor razoável para ter saúde</option>
+                                <option value="Alto">O que for necessário para atingir meu objetivo</option>
+                                <option value="Outros">Outros (Descreva)</option>
+                            </select>
+                            <input type="text" name="investimento_outro" class="w-full px-4 py-2 mt-2 border border-blue-200 rounded-lg other-input" placeholder="Descreva seu momento...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO 3: Comportamentos -->
+            <div class="step-content" data-step="3">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
+                    <h2 class="text-2xl font-bold text-secondary mb-2">Comportamentos</h2>
+                    
+                    <div class="space-y-6">
+                        
+                        <!-- Auto Avaliação -->
+                        <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
+                             <label class="block text-sm font-bold text-purple-800 mb-2"><i class="fa-solid fa-star mr-2"></i>Como você avalia sua alimentação hoje?</label>
+                             <select name="avaliacao_alimentacao" class="w-full px-4 py-2 border border-white rounded-lg shadow-sm">
+                                <option value="excelente">Excelente</option>
+                                <option value="boa">Boa</option>
+                                <option value="regular">Regular</option>
+                                <option value="ruim">Ruim</option>
+                                <option value="pessima">Péssima</option>
+                            </select>
+                        </div>
+
+                        <!-- Atividade Física (Nova Lógica com Frequência Individual + Outros) -->
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                            <h3 class="font-semibold text-blue-800 mb-3"><i class="fa-solid fa-person-running mr-2"></i>Atividade Física</h3>
+                            <label class="block text-xs text-gray-500 mb-2">Selecione e indique a frequência:</label>
+                            
+                            <div class="space-y-2 mb-3">
+                                <!-- Musculação -->
+                                <div class="p-2 bg-white rounded border border-blue-100">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="atv_check_musculacao" class="text-primary rounded toggle-freq">
+                                            <span class="text-sm">Musculação</span>
+                                        </label>
+                                        <select name="atv_freq_musculacao" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_musc_outro">
+                                            <option value="1-2x">1-2x semana</option>
+                                            <option value="3-4x">3-4x semana</option>
+                                            <option value="5x+">5x ou mais</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" name="atv_musc_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
+                                </div>
+
+                                <!-- Corrida -->
+                                <div class="p-2 bg-white rounded border border-blue-100">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="atv_check_corrida" class="text-primary rounded toggle-freq">
+                                            <span class="text-sm">Corrida</span>
+                                        </label>
+                                        <select name="atv_freq_corrida" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_corrida_outro">
+                                            <option value="1-2x">1-2x semana</option>
+                                            <option value="3-4x">3-4x semana</option>
+                                            <option value="5x+">5x ou mais</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" name="atv_corrida_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
+                                </div>
+
+                                <!-- Bike -->
+                                <div class="p-2 bg-white rounded border border-blue-100">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="atv_check_bike" class="text-primary rounded toggle-freq">
+                                            <span class="text-sm">Bike / Bicicleta</span>
+                                        </label>
+                                        <select name="atv_freq_bike" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_bike_outro">
+                                            <option value="1-2x">1-2x semana</option>
+                                            <option value="3-4x">3-4x semana</option>
+                                            <option value="5x+">5x ou mais</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" name="atv_bike_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
+                                </div>
+
+                                <!-- Natação -->
+                                <div class="p-2 bg-white rounded border border-blue-100">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="atv_check_natacao" class="text-primary rounded toggle-freq">
+                                            <span class="text-sm">Natação</span>
+                                        </label>
+                                        <select name="atv_freq_natacao" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_natacao_outro">
+                                            <option value="1-2x">1-2x semana</option>
+                                            <option value="3-4x">3-4x semana</option>
+                                            <option value="5x+">5x ou mais</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" name="atv_natacao_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
+                                </div>
+
+                                <!-- Lutas -->
+                                <div class="p-2 bg-white rounded border border-blue-100">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="atv_check_lutas" class="text-primary rounded toggle-freq">
+                                            <span class="text-sm">Boxe/Lutas</span>
+                                        </label>
+                                        <select name="atv_freq_lutas" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_lutas_outro">
+                                            <option value="1-2x">1-2x semana</option>
+                                            <option value="3-4x">3-4x semana</option>
+                                            <option value="5x+">5x ou mais</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" name="atv_lutas_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
+                                </div>
+
+                                <!-- Caminhada -->
+                                <div class="p-2 bg-white rounded border border-blue-100">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="atv_check_caminhada" class="text-primary rounded toggle-freq">
+                                            <span class="text-sm">Caminhada</span>
+                                        </label>
+                                        <select name="atv_freq_caminhada" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_caminhada_outro">
+                                            <option value="1-2x">1-2x semana</option>
+                                            <option value="3-4x">3-4x semana</option>
+                                            <option value="5x+">5x ou mais</option>
+                                            <option value="Todo dia">Todo dia</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" name="atv_caminhada_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
+                                </div>
+
+                                <!-- Deslocamento -->
+                                <div class="p-2 bg-white rounded border border-blue-100">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="atv_check_deslocamento" class="text-primary rounded toggle-freq">
+                                            <div class="flex flex-col">
+                                                <span class="text-sm">Deslocamento Ativo</span>
+                                                <span class="text-xs text-gray-400">Ir a pé/bike para trabalho ou escola</span>
+                                            </div>
+                                        </label>
+                                        <select name="atv_freq_deslocamento" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_desloc_outro">
+                                            <option value="Todo dia">Todo dia</option>
+                                            <option value="As vezes">Às vezes</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" name="atv_desloc_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
+                                </div>
+                            </div>
+                            
+                            <input type="text" name="atividade_outros" class="w-full px-4 py-2 border border-white rounded-lg shadow-sm" placeholder="Outra atividade? Qual e frequência?">
+                        </div>
+
+                        <!-- Transporte (Carro) -->
+                         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <label class="block text-sm font-bold text-gray-700 mb-2"><i class="fa-solid fa-car mr-2"></i>Costuma andar de carro/moto?</label>
+                            <select name="transporte" class="w-full px-4 py-2 border border-white rounded-lg shadow-sm toggle-other" data-target="transporte_outro">
+                                <option value="Sim, muito">Sim, uso pra tudo</option>
+                                <option value="Moderado">Moderado, tento ir a pé quando dá</option>
+                                <option value="Nao">Não, prefiro transporte público/pé</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="text" name="transporte_outro" class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg other-input" placeholder="Especifique...">
+                        </div>
+
+                        <!-- Água -->
+                        <div class="bg-cyan-50 p-4 rounded-xl border border-cyan-100">
+                            <label class="block text-sm font-medium text-cyan-800 mb-1"><i class="fa-solid fa-glass-water text-cyan-600 mr-1"></i> Ingestão de Água</label>
+                            
+                            <div class="mb-2">
+                                <label class="text-xs text-gray-500">Copos de 200ml/dia:</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="range" name="agua_range" min="0" max="20" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="document.getElementById('agua_val').value = this.value">
+                                    <input type="number" id="agua_val" class="w-12 text-center border rounded" value="0" readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="relative flex py-1 items-center">
+                                <div class="flex-grow border-t border-cyan-200"></div>
+                                <span class="flex-shrink-0 mx-2 text-xs text-cyan-500">OU</span>
+                                <div class="flex-grow border-t border-cyan-200"></div>
+                            </div>
+
+                            <div>
+                                <label class="text-xs text-gray-500">Prefere em Litros?</label>
+                                <input type="text" name="agua_litros" class="w-full px-2 py-1 border border-cyan-200 rounded text-sm" placeholder="Ex: 2,5 Litros">
+                            </div>
+                        </div>
+
+                        <!-- Jejum (Animação Sim/Não) -->
+                        <div class="bg-orange-50 p-4 rounded-xl border border-orange-100">
+                            <label class="block text-sm font-medium text-orange-800 mb-3"><i class="fa-solid fa-clock mr-1"></i> Jejum Intermitente</label>
+                            
+                            <div class="flex items-center justify-between mb-4 border-b border-orange-200 pb-2">
+                                <span class="text-sm font-semibold">Já fez?</span>
+                                <div class="flex gap-2">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="jejum_ja_fez" value="Sim" class="peer sr-only">
+                                        <div class="px-3 py-1 rounded bg-white text-gray-500 border border-gray-200 peer-checked:bg-orange-500 peer-checked:text-white transition-all text-xs">Sim</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="jejum_ja_fez" value="Nao" class="peer sr-only" checked>
+                                        <div class="px-3 py-1 rounded bg-white text-gray-500 border border-gray-200 peer-checked:bg-gray-600 peer-checked:text-white transition-all text-xs">Não</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-semibold">Faria se preciso?</span>
+                                <div class="flex gap-2">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="jejum_faria" value="Sim" class="peer sr-only">
+                                        <div class="px-3 py-1 rounded bg-white text-gray-500 border border-gray-200 peer-checked:bg-orange-500 peer-checked:text-white transition-all text-xs">Sim</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="jejum_faria" value="Nao" class="peer sr-only" checked>
+                                        <div class="px-3 py-1 rounded bg-white text-gray-500 border border-gray-200 peer-checked:bg-gray-600 peer-checked:text-white transition-all text-xs">Não</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Álcool (Novo Select) -->
+                        <div>
+                            <label class="block text-sm text-gray-700 font-medium mb-1"><i class="fa-solid fa-wine-glass mr-1 text-red-400"></i> Consome Álcool?</label>
+                            <select name="alcool" class="w-full border rounded px-3 py-2 text-sm toggle-other" data-target="alcool_outro">
+                                <option value="Nao">Não</option>
+                                <option value="Sim">Sim, socialmente</option>
+                                <option value="2x Semana">2x na Semana</option>
+                                <option value="4x Semana">4x na Semana</option>
+                                <option value="Finais de Semana">Apenas finais de semana</option>
+                                <option value="Ocasionalmente">Ocasionalmente</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="text" name="alcool_outro" class="w-full px-3 py-2 mt-2 border border-red-200 rounded text-sm other-input" placeholder="Detalhe...">
+                        </div>
+
+                        <!-- Fumo -->
+                         <div>
+                            <label class="block text-sm text-gray-700 font-medium mb-1"><i class="fa-solid fa-smoking mr-1 text-gray-500"></i> Fuma?</label>
+                            <select name="fuma" class="w-full border rounded px-3 py-2 text-sm toggle-other" data-target="fuma_outro">
+                                <option value="nao">Não</option>
+                                <option value="sim">Sim</option>
+                                <option value="parou">Parei recentemente</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="text" name="fuma_outro" class="w-full px-3 py-2 mt-2 border border-gray-300 rounded text-sm other-input" placeholder="Detalhe...">
+                        </div>
+
+                        <!-- Tempo Sentado (Novo Select) -->
+                        <div>
+                            <label class="block text-sm text-gray-700 font-medium mb-1"><i class="fa-solid fa-chair mr-1 text-brown-500"></i> Tempo sentado/dia</label>
+                            <select name="tempo_sentado" class="w-full border rounded px-3 py-2 text-sm toggle-other" data-target="sentado_outro">
+                                <option value="Pouco">Pouco (menos de 2h)</option>
+                                <option value="2-4h">Entre 2h e 4h</option>
+                                <option value="4-8h">Entre 4h e 8h (horário comercial)</option>
+                                <option value="8h+">Mais de 8h por dia</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="text" name="sentado_outro" class="w-full px-3 py-2 mt-2 border border-gray-300 rounded text-sm other-input" placeholder="Detalhe...">
+                        </div>
+
+                        <!-- Tempo Telas (Novo Select) -->
+                        <div>
+                            <label class="block text-sm text-gray-700 font-medium mb-1"><i class="fa-solid fa-tv mr-1 text-gray-800"></i> Tempo em telas/TV</label>
+                            <select name="tempo_tv" class="w-full border rounded px-3 py-2 text-sm toggle-other" data-target="tv_outro">
+                                <option value="Pouco">Quase nada</option>
+                                <option value="1-2h">1 a 2 horas (noite)</option>
+                                <option value="3-4h">3 a 4 horas</option>
+                                <option value="Muito">Muitas horas (vício)</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="text" name="tv_outro" class="w-full px-3 py-2 mt-2 border border-gray-300 rounded text-sm other-input" placeholder="Detalhe...">
+                        </div>
+                        
+                        <!-- Escada vs Elevador -->
+                        <div class="border border-gray-200 p-4 rounded-lg flex items-center justify-between hover:bg-gray-50 transition">
+                            <div class="flex items-center gap-3">
+                                <div class="text-2xl text-primary animate-bounce">
+                                    <i class="fa-solid fa-stairs"></i>
+                                </div>
+                                <label class="text-sm font-medium text-gray-700">Quando vê uma escada, você sobe ou espera o elevador?</label>
+                            </div>
+                            <div class="flex flex-col items-end">
+                                <select name="escada_elevador" class="border rounded px-2 py-1 text-sm mb-1 toggle-other" data-target="escada_outro">
+                                    <option value="elevador">Elevador sempre</option>
+                                    <option value="escada">Vou de escada</option>
+                                    <option value="depende">Depende do dia</option>
+                                    <option value="Outros">Outros</option>
+                                </select>
+                                <input type="text" name="escada_outro" class="w-32 px-2 py-1 border border-gray-200 rounded text-xs other-input" placeholder="Especifique...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO 4: Recordatório 24h -->
+            <div class="step-content" data-step="4">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
+                    <h2 class="text-2xl font-bold text-secondary mb-2">Recordatório 24h</h2>
+                    <p class="text-gray-500 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
+                        <i class="fa-solid fa-circle-info mr-2"></i>Descreva o que comeu ontem com detalhes.
+                    </p>
+
+                    <div class="space-y-4">
+                        <!-- Café -->
+                        <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
+                            <div class="flex justify-between mb-1">
+                                <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-mug-hot mr-1 text-orange-400"></i>Café da Manhã</label>
+                                <input type="time" name="horario_cafe" class="text-xs border rounded px-1">
+                            </div>
+                            <input type="text" name="rec_cafe" class="w-full p-2 bg-white rounded border border-gray-200 text-sm" placeholder="Ex: 2 ovos, café preto...">
+                        </div>
+
+                        <!-- Lanche Manhã -->
+                        <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
+                            <div class="flex justify-between mb-1">
+                                <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-apple-whole mr-1 text-red-400"></i>Lanche da Manhã</label>
+                                <input type="time" name="horario_lanche1" class="text-xs border rounded px-1">
+                            </div>
+                            <input type="text" name="rec_lanche1" class="w-full p-2 bg-white rounded border border-gray-200 text-sm">
+                        </div>
+
+                        <!-- Almoço -->
+                        <div class="border-l-4 border-green-500 rounded-r-xl p-3 bg-white shadow-sm">
+                            <div class="flex justify-between mb-1">
+                                <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-utensils mr-1 text-green-600"></i>Almoço</label>
+                                <input type="time" name="horario_almoco" class="text-xs border rounded px-1">
+                            </div>
+                            <textarea name="rec_almoco" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm" placeholder="Detalhe as quantidades..."></textarea>
+                        </div>
+
+                        <!-- Lanche Tarde -->
+                        <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
+                            <div class="flex justify-between mb-1">
+                                <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-cookie-bite mr-1 text-yellow-600"></i>Lanche da Tarde</label>
+                                <input type="time" name="horario_lanche2" class="text-xs border rounded px-1">
+                            </div>
+                            <input type="text" name="rec_lanche2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm">
+                        </div>
+
+                        <!-- Jantar -->
+                        <div class="border-l-4 border-blue-500 rounded-r-xl p-3 bg-white shadow-sm">
+                            <div class="flex justify-between mb-1">
+                                <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-bowl-food mr-1 text-blue-600"></i>Jantar</label>
+                                <input type="time" name="horario_jantar" class="text-xs border rounded px-1">
+                            </div>
+                            <textarea name="rec_jantar" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm"></textarea>
+                        </div>
+
+                        <!-- Ceia -->
+                        <div class="border border-indigo-200 rounded-xl p-3 bg-indigo-50">
+                            <div class="flex justify-between mb-1">
+                                <label class="font-bold text-sm text-indigo-700"><i class="fa-solid fa-moon mr-1"></i>Ceia (Antes de dormir)</label>
+                                <input type="time" name="horario_ceia" class="text-xs border rounded px-1">
+                            </div>
+                            <input type="text" name="rec_ceia" class="w-full p-2 bg-white rounded border border-indigo-100 text-sm" placeholder="Chá, fruta, iogurte?">
+                        </div>
+
+                        <!-- Beliscos -->
+                        <div class="border border-red-200 rounded-xl p-3 bg-red-50">
+                            <label class="font-bold text-sm text-red-700 block mb-1"><i class="fa-solid fa-hand-holding mr-1"></i>Beliscos / Extras</label>
+                            <input type="text" name="rec_beliscos" class="w-full p-2 bg-white rounded border border-red-100 text-sm" placeholder="Balinhas, café com açúcar, provinhas enquanto cozinha...">
+                        </div>
+
+                         <!-- Pré Treino (Movido para o final) -->
+                         <div class="border border-purple-200 rounded-xl p-3 bg-purple-50">
+                            <div class="flex justify-between mb-1">
+                                <label class="font-bold text-sm text-purple-700"><i class="fa-solid fa-dumbbell mr-1"></i>Pré-Treino (Se houver)</label>
+                                <input type="time" name="horario_pretreino" class="text-xs border rounded px-1">
+                            </div>
+                            <input type="text" name="rec_pretreino" class="w-full p-2 bg-white rounded border border-purple-100 text-sm" placeholder="O que come antes de treinar?">
+                        </div>
+
+                        <!-- NOVO BLOCO: Hábitos de Preparo e Rotina -->
+                        <div class="mt-8 border-t-2 border-dashed border-gray-200 pt-6">
+                            <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center">
+                                <i class="fa-solid fa-fire-burner mr-2 text-primary"></i>Hábitos de Preparo e Rotina
+                            </h3>
+
+                            <div class="grid grid-cols-1 gap-5">
+                                <!-- Temperos -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Que tipos de tempero usa nas refeições?</label>
+                                    <textarea name="habito_temperos" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none text-sm" placeholder="Ex: Sazon, Açafrão, Chimichurri, Alho, Sal..."></textarea>
+                                </div>
+
+                                <!-- Manteiga e Gordura de Cozinhar -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
+                                        <label class="block text-sm font-medium text-yellow-800 mb-1">Usa Margarina ou Manteiga?</label>
+                                        <input type="text" name="habito_manteiga" class="w-full px-3 py-2 border border-yellow-200 rounded text-sm mb-1" placeholder="Qual? (Ex: Manteiga sem sal)">
+                                        <input type="text" name="habito_manteiga_freq" class="w-full px-3 py-2 border border-yellow-200 rounded text-sm" placeholder="Onde, frequência e quantidade?">
+                                    </div>
+                                    <div class="bg-orange-50 p-3 rounded-lg border border-orange-100">
+                                        <label class="block text-sm font-medium text-orange-800 mb-1">Gordura para Cozinhar</label>
+                                        <select name="habito_oleo_tipo" class="w-full px-3 py-2 border border-orange-200 rounded text-sm mb-1">
+                                            <option value="">Selecione...</option>
+                                            <option value="Oleo de Soja">Óleo de Soja</option>
+                                            <option value="Azeite">Azeite de Oliva</option>
+                                            <option value="Banha">Banha de Porco</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                        <input type="text" name="habito_oleo_detalhe" class="w-full px-3 py-2 border border-orange-200 rounded text-sm" placeholder="Detalhes (se houver)">
+                                    </div>
+                                </div>
+
+                                <!-- Frituras -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Costuma comer fritura?</label>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <select name="habito_fritura_freq" class="w-full sm:w-1/3 px-3 py-2 border border-gray-300 rounded text-sm">
+                                            <option value="Nao">Não costumo</option>
+                                            <option value="Raramente">Raramente</option>
+                                            <option value="1-2x Semana">1-2x Semana</option>
+                                            <option value="Sempre">Sempre</option>
+                                        </select>
+                                        <input type="text" name="habito_fritura_tipo" class="w-full px-3 py-2 border border-gray-300 rounded text-sm" placeholder="Se sim, o que costuma fritar? (Ex: Ovo, Bife, Batata)">
+                                    </div>
+                                </div>
+
+                                <!-- Açúcar e Sal -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1"><i class="fa-solid fa-spoon mr-1"></i> Açúcar / Adoçante</label>
+                                        <select name="habito_acucar_tipo" class="w-full px-3 py-2 border border-gray-300 rounded text-sm mb-1">
+                                            <option value="Acucar">Açúcar Normal</option>
+                                            <option value="Adocante">Adoçante</option>
+                                            <option value="Nao usa">Não uso nenhum</option>
+                                        </select>
+                                        <input type="text" name="habito_acucar_detalhe" class="w-full px-3 py-2 border border-gray-300 rounded text-sm" placeholder="Em qual alimento e frequência?">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1"><i class="fa-solid fa-shaker mr-1"></i> Sal</label>
+                                        <select name="habito_sal_tipo" class="w-full px-3 py-2 border border-gray-300 rounded text-sm mb-1">
+                                            <option value="Refinado">Refinado (Normal)</option>
+                                            <option value="Himalaia">Rosa / Himalaia</option>
+                                            <option value="Marinho">Marinho</option>
+                                        </select>
+                                        <input type="text" name="habito_sal_freq" class="w-full px-3 py-2 border border-gray-300 rounded text-sm" placeholder="Frequência/Quantidade (Muito, Pouco?)">
+                                    </div>
+                                </div>
+
+                                <!-- Logística (Marmita) -->
+                                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                    <h4 class="text-sm font-bold text-gray-700 mb-3">Rotina de Almoço e Trabalho</h4>
+                                    
+                                    <div class="space-y-3">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-2">
+                                            <span class="text-sm">Costuma comer em casa ou fora?</span>
+                                            <select name="rotina_local_comer" class="mt-1 sm:mt-0 px-2 py-1 border rounded text-sm">
+                                                <option value="Casa">Mais em Casa</option>
+                                                <option value="Fora">Mais Fora (Restaurante)</option>
+                                                <option value="Meio a Meio">Meio a Meio</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-2">
+                                            <span class="text-sm">Leva marmita para o trabalho?</span>
+                                            <select name="rotina_leva_marmita" class="mt-1 sm:mt-0 px-2 py-1 border rounded text-sm">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim, levo</option>
+                                                <option value="As vezes">Às vezes</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+                                            <span class="text-sm text-gray-600">Se não leva, <b>levaria</b> comida?</span>
+                                            <select name="rotina_levaria_marmita" class="mt-1 sm:mt-0 px-2 py-1 border rounded text-sm text-gray-600">
+                                                <option value="">-</option>
+                                                <option value="Sim">Sim, levaria</option>
+                                                <option value="Talvez">Talvez / Depende</option>
+                                                <option value="Nao">Não (Prefiro comer fora)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Auto-reflexão -->
+                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                    <label class="block text-sm font-medium text-blue-800 mb-2">
+                                        <i class="fa-regular fa-lightbulb mr-1"></i> Auto-reflexão do Registro
+                                    </label>
+                                    <p class="text-xs text-blue-600 mb-2">Você acha que tudo que relatou acima está correto ou tem algo que poderia melhorar?</p>
+                                    <textarea name="auto_reflexao_registro" rows="3" class="w-full px-3 py-2 border border-blue-200 rounded bg-white text-sm" placeholder="Ex: Acho que como muita fritura... Ou esqueci de colocar tal coisa..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO 5: Preferências -->
+            <div class="step-content" data-step="5">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
+                    <h2 class="text-2xl font-bold text-secondary mb-2">Preferências</h2>
+                    <p class="text-gray-500 mb-6">Com base no que você come, o que podemos ajustar?</p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1 text-green-600"><i class="fa-solid fa-heart mr-1"></i> Alimentos que você AMA</label>
+                            <textarea name="alimentos_gosta" rows="3" class="w-full px-4 py-2 border border-green-200 bg-green-50 rounded-lg resize-none" placeholder="O que não pode faltar na sua rotina?"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1 text-red-500"><i class="fa-solid fa-ban mr-1"></i> Alimentos que você NÃO gosta</label>
+                            <textarea name="alimentos_nao_gosta" rows="3" class="w-full px-4 py-2 border border-red-200 bg-red-50 rounded-lg resize-none" placeholder="O que eu não devo colocar no seu plano?"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO 6: Industrializados & Fim de Semana -->
+            <div class="step-content" data-step="6">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
+                    <h2 class="text-2xl font-bold text-secondary mb-4">Industrializados & Fim de Semana</h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Selecione o que consome e a frequência:</label>
+                        <div class="grid grid-cols-1 gap-3">
+                            
+                            <div class="p-2 bg-gray-50 rounded border border-gray-100">
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="ultra_check_refri" class="text-primary rounded toggle-freq">
+                                        <span class="text-sm">Refrigerante</span>
+                                    </label>
+                                    <select name="ultra_freq_refri" class="text-xs border rounded p-1 hidden toggle-other" data-target="ultra_refri_outro">
+                                        <option value="Raramente">Raramente</option>
+                                        <option value="FDS">Fim de semana</option>
+                                        <option value="3x Semana">3x Semana</option>
+                                        <option value="Todo dia">Todo dia</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                </div>
+                                <input type="text" name="ultra_refri_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Qual a frequência?">
+                            </div>
+
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-100">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="ultra_check_suco" class="text-primary rounded toggle-freq">
+                                    <span class="text-sm">Suco de Caixinha/Em Pó</span>
+                                </label>
+                                <select name="ultra_freq_suco" class="text-xs border rounded p-1 hidden">
+                                    <option value="Raramente">Raramente</option>
+                                    <option value="Lanche escolar/trabalho">Lanches</option>
+                                    <option value="Todo dia">Todo dia</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-100">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="ultra_check_embutidos" class="text-primary rounded toggle-freq">
+                                    <span class="text-sm">Embutidos <span class="text-xs text-gray-400">(Presunto, Salsicha, Salame, Peito de Peru)</span></span>
+                                </label>
+                                <select name="ultra_freq_embutidos" class="text-xs border rounded p-1 hidden">
+                                    <option value="Raramente">Raramente</option>
+                                    <option value="Sanduíches">Em sanduíches</option>
+                                    <option value="Sempre">Sempre</option>
+                                </select>
+                            </div>
+
+                             <div class="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-100">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="ultra_check_congelados" class="text-primary rounded toggle-freq">
+                                    <span class="text-sm">Congelados <span class="text-xs text-gray-400">(Lasanha, Pizza, Nuggets)</span></span>
+                                </label>
+                                <select name="ultra_freq_congelados" class="text-xs border rounded p-1 hidden">
+                                    <option value="Emergência">Só na pressa</option>
+                                    <option value="1x Semana">1x Semana</option>
+                                    <option value="Sempre">Sempre</option>
+                                </select>
+                            </div>
+
+                             <div class="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-100">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="ultra_check_doces" class="text-primary rounded toggle-freq">
+                                    <span class="text-sm">Doces/Chocolates</span>
+                                </label>
+                                <select name="ultra_freq_doces" class="text-xs border rounded p-1 hidden">
+                                    <option value="TPM">Na TPM</option>
+                                    <option value="Sobremesa">Sobremesa diária</option>
+                                    <option value="FDS">Só FDS</option>
+                                </select>
+                            </div>
+
+                             <div class="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-100">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="ultra_check_fastfood" class="text-primary rounded toggle-freq">
+                                    <span class="text-sm">Fast Food (Hambúrguer/Pizza)</span>
+                                </label>
+                                <select name="ultra_freq_fastfood" class="text-xs border rounded p-1 hidden">
+                                    <option value="1x Mes">1x Mês</option>
+                                    <option value="Sexta a Domingo">Sexta a Domingo</option>
+                                    <option value="Muito frequente">Muito frequente</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Como costuma ser seu final de semana?</label>
+                        <textarea name="fim_de_semana" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Muda muito a rotina? Come fora? Bebe?"></textarea>
+                    </div>
+
+                    <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                        <label class="block text-sm font-bold text-red-700 mb-1"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Alergias ou Intolerâncias</label>
+                        <textarea name="alergias" rows="2" class="w-full px-4 py-2 border border-white rounded-lg resize-none" placeholder="Cite qualquer alergia ou alimento que te faz mal..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+             <!-- SEÇÃO 7: Finalização e LGPD -->
+             <div class="step-content" data-step="7">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
+                    <h2 class="text-2xl font-bold text-secondary mb-4">Espaço Livre & Finalização</h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Algo mais que eu deva saber?</label>
+                        <textarea name="obs_finais" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Use este espaço para escrever qualquer informação que você considere importante..."></textarea>
+                    </div>
+
+                    <!-- LGPD Box -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-start gap-3">
+                            <div class="flex items-center h-5 checkbox-wrapper">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="lgpd-consent" required class="sr-only peer">
+                                    <div class="w-5 h-5 border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center transition-all">
+                                        <svg class="w-3 h-3 text-white hidden pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="text-sm">
+                                <label for="lgpd-consent" class="font-medium text-gray-700 cursor-pointer">Consentimento de Uso de Dados</label>
+                                <p class="text-gray-500 text-xs mt-1 text-justify">
+                                    Declaro que as informações fornecidas são verdadeiras. Autorizo o uso destes dados exclusivamente para fins de elaboração do meu planejamento nutricional, conforme a Lei Geral de Proteção de Dados (LGPD).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-3 items-center justify-center">
+                         <p class="text-sm text-gray-500 mb-2">Tudo pronto? Gere seu PDF abaixo e enviei para o profissional.</p>
+                         <button type="button" onclick="generateAndDownloadPDF()" class="w-full sm:w-auto bg-primary text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:bg-green-600 transition-all transform hover:scale-105 flex items-center justify-center gap-3 text-lg">
+                            <i class="fa-solid fa-file-pdf text-2xl"></i> Gerar e Enviar PDF
+                         </button>
+                         <div id="status-msg" class="text-sm font-medium mt-4 hidden text-green-600 bg-green-50 px-4 py-2 rounded-lg border border-green-200">
+                             <i class="fa-solid fa-check-circle mr-2"></i> Enviei para o seu nutricionista!
+                         </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Navegação -->
+            <div class="mt-8 flex justify-between items-center max-w-3xl mx-auto pb-8">
+                <button type="button" id="prevBtn" onclick="changeStep(-1)" class="px-6 py-2 rounded-lg text-gray-600 hover:bg-gray-200 disabled:opacity-0 transition-all font-medium">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
+                </button>
+                <div class="text-gray-400 text-sm font-medium">Passo <span id="current-step-display">1</span> de 7</div>
+                <button type="button" id="nextBtn" onclick="changeStep(1)" class="px-6 py-2 rounded-lg bg-gray-800 text-white hover:bg-gray-900 transition-all font-medium shadow-md">
+                    Próximo <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    <footer class="text-center py-6 text-gray-500 text-xs border-t border-gray-200 mt-auto bg-white">
+        <p>Desenvolvido por Rômulo F. Monteiro. Todos os direitos reservados.(Instagram: <a href="https://www.instagram.com/romulof.monteiro/" target="_blank" class="text-primary hover:underline">@romulof.monteiro</a>).</p>
+    </footer>
+
+    <!-- Container Oculto para Geração do PDF -->
+    <div id="pdf-container">
+        <!-- O conteúdo será injetado via JS -->
+    </div>
+
+    <!-- Lógica da Aplicação -->
+    <script>
+        // --- 1. LÓGICA DE INTERFACE ---
+        
+        // Toggle de Frequência nos Checkboxes (Genérico)
+        document.querySelectorAll('.toggle-freq').forEach(chk => {
+            chk.addEventListener('change', function() {
+                const parent = this.closest('div'); // Ajuste para container
+                const select = parent.querySelector('select'); // Busca select irmão ou próximo
+                if (!select) return; // Segurança
+
+                if(this.checked) {
+                    select.classList.remove('hidden');
+                } else {
+                    select.classList.add('hidden');
+                    // Se ocultar, também limpa e oculta o input "Outros" se houver
+                    if(select.value === 'Outros') {
+                        const targetName = select.dataset.target;
+                        const otherInput = document.querySelector(`input[name="${targetName}"]`);
+                        if(otherInput) {
+                            otherInput.classList.remove('active');
+                            otherInput.value = '';
+                        }
+                        select.value = select.options[0].value;
+                    }
+                }
+            });
+        });
+
+        // Toggle de Campos "Outros" (Selects)
+        document.querySelectorAll('.toggle-other').forEach(sel => {
+            sel.addEventListener('change', function() {
+                const targetName = this.dataset.target;
+                const otherInput = document.querySelector(`input[name="${targetName}"]`);
+                
+                if(otherInput) {
+                    if(this.value === 'Outros') {
+                        otherInput.classList.add('active');
+                        otherInput.focus();
+                    } else {
+                        otherInput.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // --- 2. LÓGICA DE NAVEGAÇÃO (WIZARD) ---
+        let currentStep = 1;
+        const totalSteps = 7;
+
+        function updateUI() {
+            // Atualiza barra de progresso
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('current-step-display').innerText = currentStep;
+
+            // Mostra/Esconde seções
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.remove('active');
+                if (parseInt(el.dataset.step) === currentStep) {
+                    el.classList.add('active');
+                }
+            });
+
+            // Controla botões
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentStep === 1;
+            
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'block';
+                nextBtn.innerHTML = `Próximo <i class="fa-solid fa-arrow-right ml-2"></i>`;
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function validateCurrentStep() {
+            const currentStepEl = document.querySelector(`.step-content[data-step="${currentStep}"]`);
+            const inputs = currentStepEl.querySelectorAll('input[required], textarea[required], select[required]');
+            let valid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    valid = false;
+                    input.classList.add('border-red-500');
+                    input.addEventListener('input', function() {
+                        this.classList.remove('border-red-500');
+                    }, {once: true});
+                }
+            });
+
+            if (!valid) {
+                alert("Por favor, preencha os campos obrigatórios antes de prosseguir.");
+            }
+            return valid;
+        }
+
+        function changeStep(n) {
+            if (n === 1 && !validateCurrentStep()) return;
+            
+            currentStep += n;
+            if (currentStep < 1) currentStep = 1;
+            if (currentStep > totalSteps) currentStep = totalSteps;
+            
+            updateUI();
+        }
+
+        // --- 3. GERAÇÃO DE PDF ---
+        function preparePDFContent() {
+            const form = document.getElementById('anamneseForm');
+            const container = document.getElementById('pdf-container');
+            const date = new Date().toLocaleDateString('pt-BR');
+
+            let html = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom: 3px solid #10B981; padding-bottom:10px;">
+                    <h1 style="color:#065F46; margin:0; font-size:24px;">Anamnese Nutricional - RFM</h1>
+                    <div style="text-align:right; font-size:12px; color:#666;">Data: ${date}</div>
+                </div>
+            `;
+
+            const val = (name) => {
+                const el = form.querySelector(`[name="${name}"]`);
+                return el ? (el.value || 'Não informado') : 'Não informado';
+            };
+
+            // Helper para pegar valor de select, e se for "Outros", pegar o input de texto
+            const valSelectOther = (selectName, inputName) => {
+                const selectVal = val(selectName);
+                if (selectVal === 'Outros') {
+                    return `Outros (${val(inputName)})`;
+                }
+                return selectVal;
+            };
+
+            const getCheckedRadio = (name) => {
+                 const el = form.querySelector(`input[name="${name}"]:checked`);
+                 return el ? el.value : 'Não informado';
+            };
+            
+            // Helper para Atividades Físicas com Frequência + Outros
+            const getAtv = (nameCheck, nameFreq, nameOther) => {
+                const check = form.querySelector(`input[name="${nameCheck}"]`);
+                if(check && check.checked) {
+                    let freq = form.querySelector(`select[name="${nameFreq}"]`).value;
+                    if(freq === 'Outros' && nameOther) {
+                        freq = form.querySelector(`input[name="${nameOther}"]`).value || 'Outros (Não especificado)';
+                    }
+                    return `${freq}`;
+                }
+                return null;
+            };
+
+            // Helper para Industrializados + Outros
+            const getIndus = (nameCheck, nameFreq, nameOther) => {
+                const check = form.querySelector(`input[name="${nameCheck}"]`);
+                if(check && check.checked) {
+                    let freq = form.querySelector(`select[name="${nameFreq}"]`).value;
+                    if(freq === 'Outros' && nameOther) {
+                         freq = form.querySelector(`input[name="${nameOther}"]`).value || 'Outros';
+                    }
+                    return `Sim (${freq})`;
+                }
+                return null;
+            };
+
+            // 1. Dados Pessoais
+            html += `
+                <div class="pdf-section">
+                    <h2>1. Dados Pessoais</h2>
+                    <p><strong>Nome:</strong> ${val('nome')} | <strong>Idade:</strong> ${val('idade')} anos</p>
+                    <p><strong>Moradia:</strong> ${val('moradia')}</p>
+                    <p><strong>Altura:</strong> ${val('altura')} cm | <strong>Peso:</strong> ${val('peso')} kg</p>
+                </div>
+            `;
+
+            // 2. Histórico & Objetivos
+            html += `
+                <div class="pdf-section">
+                    <h2>2. Histórico & Objetivos</h2>
+                    <p><strong>Objetivo Principal:</strong> ${val('objetivo')}</p>
+                    <p><strong>Expectativa:</strong> ${val('expectativa_ajuda')}</p>
+                    <p><strong>Meta (6 meses/Mensal):</strong> ${val('meta_peso')}</p>
+                    <p><strong>Dificuldade:</strong> ${val('dificuldade_mudanca')}</p>
+                    <p><strong>Histórico de Peso:</strong> ${val('historico_peso')}</p>
+                    <p><strong>Estresse:</strong> ${val('estressada')} | <strong>Investimento:</strong> ${valSelectOther('investimento', 'investimento_outro')}</p>
+                    <p><strong>Doenças:</strong> ${val('doencas')}</p>
+                    <p><strong>Medicamentos:</strong> ${val('medicamentos')}</p>
+                </div>
+            `;
+
+            // 3. Comportamentos
+            let atvList = [];
+            const a1 = getAtv('atv_check_musculacao', 'atv_freq_musculacao', 'atv_musc_outro'); if(a1) atvList.push(`Musculação (${a1})`);
+            const a2 = getAtv('atv_check_corrida', 'atv_freq_corrida', 'atv_corrida_outro'); if(a2) atvList.push(`Corrida (${a2})`);
+            const a3 = getAtv('atv_check_bike', 'atv_freq_bike', 'atv_bike_outro'); if(a3) atvList.push(`Bike (${a3})`);
+            const a4 = getAtv('atv_check_natacao', 'atv_freq_natacao', 'atv_natacao_outro'); if(a4) atvList.push(`Natação (${a4})`);
+            const a5 = getAtv('atv_check_lutas', 'atv_freq_lutas', 'atv_lutas_outro'); if(a5) atvList.push(`Lutas (${a5})`);
+            const a6 = getAtv('atv_check_caminhada', 'atv_freq_caminhada', 'atv_caminhada_outro'); if(a6) atvList.push(`Caminhada (${a6})`);
+            const a7 = getAtv('atv_check_deslocamento', 'atv_freq_deslocamento', 'atv_desloc_outro'); if(a7) atvList.push(`Desloc. Ativo (${a7})`);
+
+            html += `
+                <div class="pdf-section">
+                    <h2>3. Comportamentos</h2>
+                    <p><strong>Autoavaliação Alimentar:</strong> ${val('avaliacao_alimentacao')}</p>
+                    <p><strong>Atividades:</strong> ${atvList.length ? atvList.join(', ') : 'Nenhuma'} ${val('atividade_outros') ? '| Outra: ' + val('atividade_outros') : ''}</p>
+                    <p><strong>Transporte (Carro/Moto):</strong> ${valSelectOther('transporte', 'transporte_outro')}</p>
+                    <p><strong>Água:</strong> ${val('agua_range')} copos (200ml) OU ${val('agua_litros')}</p>
+                    <p><strong>Jejum:</strong> Já fez? ${getCheckedRadio('jejum_ja_fez')} | Faria? ${getCheckedRadio('jejum_faria')}</p>
+                    <p><strong>Álcool:</strong> ${valSelectOther('alcool', 'alcool_outro')}</p>
+                    <p><strong>Fuma:</strong> ${valSelectOther('fuma', 'fuma_outro')}</p>
+                    <p><strong>Rotina:</strong> Sentado: ${valSelectOther('tempo_sentado', 'sentado_outro')} | TV: ${valSelectOther('tempo_tv', 'tv_outro')}</p>
+                    <p><strong>Escada:</strong> ${valSelectOther('escada_elevador', 'escada_outro')}</p>
+                </div>
+            `;
+
+            // 4. Recordatório 24h
+            html += `
+                <div class="pdf-section">
+                    <h2>4. Recordatório 24h & Hábitos</h2>
+                    <div style="background:#f9fafb; padding:10px; border-radius:5px; font-size:11px; margin-bottom: 10px;">
+                        <p><strong>Café (${val('horario_cafe')}):</strong> ${val('rec_cafe')}</p>
+                        <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
+                        <p><strong>Lanche Manhã (${val('horario_lanche1')}):</strong> ${val('rec_lanche1')}</p>
+                        <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
+                        <p><strong>Almoço (${val('horario_almoco')}):</strong> ${val('rec_almoco')}</p>
+                        <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
+                        <p><strong>Lanche Tarde (${val('horario_lanche2')}):</strong> ${val('rec_lanche2')}</p>
+                        <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
+                        <p><strong>Jantar (${val('horario_jantar')}):</strong> ${val('rec_jantar')}</p>
+                        <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
+                        <p><strong>Ceia (${val('horario_ceia')}):</strong> ${val('rec_ceia')}</p>
+                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
+                         <p><strong>Beliscos:</strong> ${val('rec_beliscos')}</p>
+                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
+                         <p><strong>Pré-Treino (${val('horario_pretreino')}):</strong> ${val('rec_pretreino')}</p>
+                    </div>
+                    
+                    <div style="font-size:11px;">
+                        <h3 style="margin:5px 0; color:#333;">Preparo e Rotina</h3>
+                        <p><strong>Temperos:</strong> ${val('habito_temperos')}</p>
+                        <p><strong>Manteiga/Margarina:</strong> ${val('habito_manteiga')} (${val('habito_manteiga_freq')})</p>
+                        <p><strong>Gordura Cozinhar:</strong> ${val('habito_oleo_tipo')} ${val('habito_oleo_detalhe')}</p>
+                        <p><strong>Fritura:</strong> ${val('habito_fritura_freq')} (${val('habito_fritura_tipo')})</p>
+                        <p><strong>Açúcar:</strong> ${val('habito_acucar_tipo')} - ${val('habito_acucar_detalhe')}</p>
+                        <p><strong>Sal:</strong> ${val('habito_sal_tipo')} - ${val('habito_sal_freq')}</p>
+                        <p><strong>Logística:</strong> Come em: ${val('rotina_local_comer')} | Leva Marmita: ${val('rotina_leva_marmita')} (Levaria: ${val('rotina_levaria_marmita')})</p>
+                        <p style="margin-top:5px; background:#eef2ff; padding:5px;"><strong>Auto-reflexão:</strong> ${val('auto_reflexao_registro')}</p>
+                    </div>
+                </div>
+            `;
+
+            // 5. Preferências
+            html += `
+                <div class="pdf-section">
+                    <h2>5. Preferências</h2>
+                    <p><strong>Ama:</strong> ${val('alimentos_gosta')}</p>
+                    <p><strong>Não Gosta:</strong> ${val('alimentos_nao_gosta')}</p>
+                </div>
+            `;
+
+            // 6. Industrializados
+            let indusList = [];
+            const r1 = getIndus('ultra_check_refri', 'ultra_freq_refri', 'ultra_refri_outro'); if(r1) indusList.push(`Refri: ${r1}`);
+            const r2 = getIndus('ultra_check_suco', 'ultra_freq_suco'); if(r2) indusList.push(`Suco: ${r2}`);
+            const r3 = getIndus('ultra_check_embutidos', 'ultra_freq_embutidos'); if(r3) indusList.push(`Embutidos: ${r3}`);
+            const r4 = getIndus('ultra_check_congelados', 'ultra_freq_congelados'); if(r4) indusList.push(`Congelados: ${r4}`);
+            const r5 = getIndus('ultra_check_doces', 'ultra_freq_doces'); if(r5) indusList.push(`Doces: ${r5}`);
+            const r6 = getIndus('ultra_check_fastfood', 'ultra_freq_fastfood'); if(r6) indusList.push(`FastFood: ${r6}`);
+
+            html += `
+                <div class="pdf-section">
+                    <h2>6. Industrializados & Fim de Semana</h2>
+                    <p><strong>Consumo:</strong> ${indusList.length ? indusList.join(' | ') : 'Nenhum consumo frequente relatado'}</p>
+                    <p><strong>Fim de Semana:</strong> ${val('fim_de_semana')}</p>
+                    <p><strong>Alergias:</strong> ${val('alergias')}</p>
+                </div>
+            `;
+
+            // 7. Obs Finais
+            html += `
+                <div class="pdf-section">
+                    <h2>7. Observações Finais</h2>
+                    <p>${val('obs_finais')}</p>
+                    <p style="margin-top:20px; font-size:10px; color:#888;">
+                        * O paciente declarou consentimento LGPD na data de geração deste documento.
+                        <br>Desenvolvido por Rômulo F. Monteiro.
+                    </p>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function generateAndDownloadPDF() {
+            if(!document.getElementById('lgpd-consent').checked) {
+                alert("Por favor, aceite os termos da LGPD antes de gerar o PDF.");
+                return;
+            }
+
+            preparePDFContent();
+            
+            const element = document.getElementById('pdf-container');
+            const name = document.querySelector('input[name="nome"]').value || "Paciente";
+            const btn = document.querySelector('button[onclick="generateAndDownloadPDF()"]');
+            const statusMsg = document.getElementById('status-msg');
+            
+            element.style.display = 'block';
+            
+            // Feedback Visual de Carregamento
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Gerando...`;
+            btn.disabled = true;
+
+            const opt = {
+                margin:       10,
+                filename:     `Anamnese_${name.replace(/\s+/g, '_')}_RFM.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none';
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                // Mensagem de sucesso solicitada
+                statusMsg.classList.remove('hidden');
+                statusMsg.classList.add('block', 'animate-pulse');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+        });
+    </script>
+</body>
+</html>
