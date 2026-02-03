@@ -81,12 +81,12 @@
         }
 
         /* Animação para campos 'Outros' e Inputs ocultos */
-        .other-input, .hidden-input-group {
+        .other-input, .hidden-input-group, .conditional-group {
             display: none;
             margin-top: 8px;
             animation: slideDown 0.3s ease-out;
         }
-        .other-input.active, .hidden-input-group.active {
+        .other-input.active, .hidden-input-group.active, .conditional-group.active {
             display: flex; /* Alterado para flex para alinhar inputs */
         }
         
@@ -143,7 +143,7 @@
             <div class="step-content active" data-step="1">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
                     <h2 class="text-2xl font-bold text-secondary mb-2">Vamos nos conhecer?</h2>
-                    <!-- Texto alterado conforme solicitado -->
+                    
                     <p class="text-gray-500 mb-6">Preencha as informações a seguir para darmos início ao atendimento.</p>
                     
                     <div class="grid grid-cols-1 gap-6">
@@ -152,7 +152,6 @@
                             <input type="text" name="nome" required class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors placeholder-gray-400" placeholder="Ex: Maria da Silva">
                         </div>
                         
-                        <!-- Ajuste de Layout: Idade, Altura e Peso na mesma linha (grid de 3 colunas) -->
                         <div class="grid grid-cols-3 gap-3">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Idade</label>
@@ -201,6 +200,33 @@
                         <div class="bg-green-50 p-3 rounded-lg border border-green-100">
                             <label class="block text-sm font-medium text-green-800 mb-1"><i class="fa-solid fa-bullseye mr-1"></i> Quantos kg desejaria perder ou ganhar daqui a 6 meses?</label>
                             <input type="text" name="meta_peso" class="w-full px-4 py-2 border border-green-200 rounded-lg" placeholder="Ex: Quero perder 5kg no total...">
+                        </div>
+
+                        <!-- Novo Bloco: Sono -->
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
+                             <label class="block text-sm font-bold text-indigo-800 mb-3"><i class="fa-solid fa-bed mr-2"></i>Como está o seu sono?</label>
+                             
+                             <div class="mb-3">
+                                <label class="block text-xs text-gray-500 mb-1">Avalie a qualidade:</label>
+                                <select name="sono_avaliacao" class="w-full px-4 py-2 border border-indigo-200 rounded-lg bg-white">
+                                    <option value="">Selecione...</option>
+                                    <option value="Bom">Bom</option>
+                                    <option value="Mais ou menos">Mais ou menos</option>
+                                    <option value="Excelente">Excelente</option>
+                                    <option value="Ruim">Ruim</option>
+                                </select>
+                             </div>
+
+                             <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Horário que dorme:</label>
+                                    <input type="time" name="sono_hora_dormir" class="w-full px-3 py-2 border border-indigo-200 rounded-lg bg-white text-center">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Horário que acorda:</label>
+                                    <input type="time" name="sono_hora_acordar" class="w-full px-3 py-2 border border-indigo-200 rounded-lg bg-white text-center">
+                                </div>
+                             </div>
                         </div>
 
                         <div>
@@ -284,7 +310,7 @@
                             </select>
                         </div>
 
-                        <!-- Atividade Física (Com Horário) -->
+                        <!-- Atividade Física (Lógica Mantida) -->
                         <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
                             <h3 class="font-semibold text-blue-800 mb-3"><i class="fa-solid fa-person-running mr-2"></i>Atividade Física</h3>
                             <label class="block text-xs text-gray-500 mb-2">Selecione, indique a frequência e o horário:</label>
@@ -309,7 +335,6 @@
                                         <input type="text" name="atv_musc_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-
                                 <!-- Corrida -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
@@ -329,7 +354,6 @@
                                         <input type="text" name="atv_corrida_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-
                                 <!-- Bike -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
@@ -349,7 +373,6 @@
                                         <input type="text" name="atv_bike_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-
                                 <!-- Natação -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
@@ -369,7 +392,6 @@
                                         <input type="text" name="atv_natacao_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-
                                 <!-- Lutas -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
@@ -389,7 +411,6 @@
                                         <input type="text" name="atv_lutas_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-
                                 <!-- Caminhada -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
@@ -410,7 +431,6 @@
                                         <input type="text" name="atv_caminhada_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-
                                 <!-- Deslocamento -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
@@ -581,12 +601,16 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 4: Recordatório 24h -->
+            <!-- SEÇÃO 4: Alimentação (Título Alterado) -->
             <div class="step-content" data-step="4">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
-                    <h2 class="text-2xl font-bold text-secondary mb-2">Recordatório 24h</h2>
+                    <!-- Título alterado com emoji de alimentos -->
+                    <h2 class="text-2xl font-bold text-secondary mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-utensils text-primary"></i> Alimentação
+                    </h2>
+                    <!-- Texto descritivo alterado -->
                     <p class="text-gray-500 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
-                        <i class="fa-solid fa-circle-info mr-2"></i>Descreva o que comeu ontem com detalhes.
+                        <i class="fa-solid fa-circle-info mr-2"></i>Descreva sua alimentação com detalhes.
                     </p>
 
                     <div class="space-y-4">
@@ -596,7 +620,6 @@
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-mug-hot mr-1 text-orange-400"></i>Café da Manhã</label>
                                 <input type="time" name="horario_cafe" class="text-xs border rounded px-1">
                             </div>
-                            <!-- Alterado para TEXTAREA para quebra de linha -->
                             <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
                             <textarea name="rec_cafe" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Ex: 2 ovos, café preto..."></textarea>
                         </div>
@@ -658,7 +681,7 @@
                             <textarea name="rec_beliscos" rows="3" class="w-full p-2 bg-white rounded border border-red-100 text-sm resize-y" placeholder="Balinhas, café com açúcar, provinhas enquanto cozinha..."></textarea>
                         </div>
 
-                         <!-- Pré Treino (Sem o comentário extra, conforme pedido) -->
+                         <!-- Pré Treino -->
                          <div class="border border-purple-200 rounded-xl p-3 bg-purple-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-purple-700"><i class="fa-solid fa-dumbbell mr-1"></i>Pré-Treino (Se houver)</label>
@@ -698,6 +721,70 @@
                                         </select>
                                         <input type="text" name="habito_oleo_detalhe" class="w-full px-3 py-2 border border-orange-200 rounded text-sm" placeholder="Detalhes (se houver)">
                                     </div>
+                                </div>
+
+                                <!-- NOVOS CAMPOS: Frutas e Vegetais -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Frutas -->
+                                    <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                                        <label class="block text-sm font-medium text-green-800 mb-1"><i class="fa-solid fa-apple-whole mr-1"></i>Consumo de Frutas?</label>
+                                        <select name="habito_frutas_check" class="w-full px-3 py-2 border border-green-200 rounded text-sm mb-1 toggle-yes-no" data-target="container_frutas">
+                                            <option value="Nao">Não</option>
+                                            <option value="Sim">Sim</option>
+                                        </select>
+                                        <div class="conditional-group flex-col gap-2" id="container_frutas">
+                                            <input type="text" name="habito_frutas_quais" class="w-full px-3 py-2 border border-green-200 rounded text-sm bg-white" placeholder="Quais frutas?">
+                                            <input type="text" name="habito_frutas_freq" class="w-full px-3 py-2 border border-green-200 rounded text-sm bg-white" placeholder="Qual frequência?">
+                                        </div>
+                                    </div>
+
+                                    <!-- Vegetais -->
+                                    <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                                        <label class="block text-sm font-medium text-green-800 mb-1"><i class="fa-solid fa-carrot mr-1"></i>Consumo de Vegetais/Salada?</label>
+                                        <select name="habito_veg_check" class="w-full px-3 py-2 border border-green-200 rounded text-sm mb-1 toggle-yes-no" data-target="container_veg">
+                                            <option value="Nao">Não</option>
+                                            <option value="Sim">Sim</option>
+                                        </select>
+                                        <div class="conditional-group flex-col gap-2" id="container_veg">
+                                            <input type="text" name="habito_veg_quais" class="w-full px-3 py-2 border border-green-200 rounded text-sm bg-white" placeholder="Quais vegetais?">
+                                            <input type="text" name="habito_veg_freq" class="w-full px-3 py-2 border border-green-200 rounded text-sm bg-white" placeholder="Qual frequência?">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Queijo e Presunto -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                     <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
+                                        <label class="block text-sm font-medium text-yellow-800 mb-1"><i class="fa-solid fa-cheese mr-1"></i>Consome Queijo?</label>
+                                        <select name="habito_queijo_check" class="w-full px-3 py-2 border border-yellow-200 rounded text-sm mb-1 toggle-conditional" data-target="container_queijo">
+                                            <option value="Nao">Não</option>
+                                            <option value="Sim">Sim</option>
+                                            <option value="As vezes">Às vezes</option>
+                                        </select>
+                                        <div class="conditional-group flex-col gap-2" id="container_queijo">
+                                            <input type="text" name="habito_queijo_onde" class="w-full px-3 py-2 border border-yellow-200 rounded text-sm bg-white" placeholder="Onde geralmente?">
+                                            <input type="text" name="habito_queijo_qtd" class="w-full px-3 py-2 border border-yellow-200 rounded text-sm bg-white" placeholder="Quantidade?">
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-red-50 p-3 rounded-lg border border-red-100">
+                                        <label class="block text-sm font-medium text-red-800 mb-1"><i class="fa-solid fa-bacon mr-1"></i>Consome Presunto?</label>
+                                        <select name="habito_presunto_check" class="w-full px-3 py-2 border border-red-200 rounded text-sm mb-1 toggle-conditional" data-target="container_presunto">
+                                            <option value="Nao">Não</option>
+                                            <option value="Sim">Sim</option>
+                                            <option value="As vezes">Às vezes</option>
+                                        </select>
+                                        <div class="conditional-group flex-col gap-2" id="container_presunto">
+                                            <input type="text" name="habito_presunto_onde" class="w-full px-3 py-2 border border-red-200 rounded text-sm bg-white" placeholder="Onde geralmente?">
+                                            <input type="text" name="habito_presunto_qtd" class="w-full px-3 py-2 border border-red-200 rounded text-sm bg-white" placeholder="Quantidade?">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Bebidas -->
+                                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                     <label class="block text-sm font-medium text-blue-800 mb-1"><i class="fa-solid fa-glass-water mr-1"></i>Bebida no momento das refeições (Almoço/Jantar)?</label>
+                                     <input type="text" name="habito_bebida_refeicao" class="w-full px-3 py-2 border border-blue-200 rounded text-sm bg-white" placeholder="Ex: Refrigerante, sucos, água...">
                                 </div>
 
                                 <!-- Frituras -->
@@ -1042,6 +1129,38 @@
             });
         });
 
+        // Toggle Sim/Não (Para Frutas, Vegetais)
+        document.querySelectorAll('.toggle-yes-no').forEach(sel => {
+            sel.addEventListener('change', function() {
+                const targetId = this.dataset.target;
+                const container = document.getElementById(targetId);
+                
+                if(container) {
+                    if(this.value === 'Sim') {
+                        container.classList.add('active');
+                    } else {
+                        container.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Toggle Conditional (Para Queijo e Presunto - Sim/As vezes vs Nao)
+        document.querySelectorAll('.toggle-conditional').forEach(sel => {
+            sel.addEventListener('change', function() {
+                const targetId = this.dataset.target;
+                const container = document.getElementById(targetId);
+                
+                if(container) {
+                    if(this.value !== 'Nao') {
+                        container.classList.add('active');
+                    } else {
+                        container.classList.remove('active');
+                    }
+                }
+            });
+        });
+
         // --- 2. LÓGICA DE NAVEGAÇÃO (WIZARD) ---
         let currentStep = 1;
         const totalSteps = 7;
@@ -1168,6 +1287,26 @@
                 return null;
             };
 
+            // Helper para os campos Sim/Não com detalhes (Frutas/Veg)
+            const getSimNaoDetalhe = (nameSelect, nameDetail, nameFreq, labelPrefix) => {
+                const sel = val(nameSelect);
+                if (sel === 'Sim') {
+                    const detail = val(nameDetail);
+                    const freq = nameFreq ? ` - Freq: ${val(nameFreq)}` : '';
+                    return `Sim (${detail}${freq})`;
+                }
+                return sel;
+            };
+            
+            // Helper para Queijo e Presunto (Sim/Não/As vezes + Detalhes + Qtd)
+            const getQueijoPresunto = (nameSelect, nameOnde, nameQtd) => {
+                const sel = val(nameSelect);
+                if (sel !== 'Nao') {
+                    return `${sel} (Onde: ${val(nameOnde)}, Qtd: ${val(nameQtd)})`;
+                }
+                return sel;
+            };
+
             // 1. Dados Pessoais
             html += `
                 <div class="pdf-section">
@@ -1185,6 +1324,9 @@
                     <p><strong>Objetivo Principal:</strong> ${val('objetivo')}</p>
                     <p><strong>Expectativa:</strong> ${val('expectativa_ajuda')}</p>
                     <p><strong>Meta (6 meses/Mensal):</strong> ${val('meta_peso')}</p>
+                    <div style="background:#eef2ff; padding:5px; border-radius:3px; margin:5px 0;">
+                        <p><strong>Sono:</strong> Avaliação: ${val('sono_avaliacao')} | Dorme: ${val('sono_hora_dormir')} | Acorda: ${val('sono_hora_acordar')}</p>
+                    </div>
                     <p><strong>Dificuldade:</strong> ${val('dificuldade_mudanca')}</p>
                     <p><strong>Histórico de Peso:</strong> ${val('historico_peso')}</p>
                     <p><strong>Estresse:</strong> ${val('estressada')} | <strong>Investimento:</strong> ${valSelectOther('investimento', 'investimento_outro')}</p>
@@ -1218,10 +1360,10 @@
                 </div>
             `;
 
-            // 4. Recordatório 24h
+            // 4. Alimentação & Hábitos
             html += `
                 <div class="pdf-section">
-                    <h2>4. Recordatório 24h & Hábitos</h2>
+                    <h2>4. Alimentação & Hábitos</h2>
                     <div style="background:#f9fafb; padding:10px; border-radius:5px; font-size:11px; margin-bottom: 10px;">
                         <p><strong>Café (${val('horario_cafe')}):</strong><br/>${val('rec_cafe')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
@@ -1245,6 +1387,16 @@
                         <p><strong>Temperos:</strong> ${val('habito_temperos')}</p>
                         <p><strong>Manteiga/Margarina:</strong> ${val('habito_manteiga')} (${val('habito_manteiga_freq')})</p>
                         <p><strong>Gordura Cozinhar:</strong> ${val('habito_oleo_tipo')} ${val('habito_oleo_detalhe')}</p>
+                        
+                        <div style="margin: 5px 0; padding: 5px; background: #f0fdf4;">
+                            <p><strong>Frutas:</strong> ${getSimNaoDetalhe('habito_frutas_check', 'habito_frutas_quais', 'habito_frutas_freq')}</p>
+                            <p><strong>Vegetais:</strong> ${getSimNaoDetalhe('habito_veg_check', 'habito_veg_quais', 'habito_veg_freq')}</p>
+                        </div>
+                        
+                        <p><strong>Queijo:</strong> ${getQueijoPresunto('habito_queijo_check', 'habito_queijo_onde', 'habito_queijo_qtd')}</p>
+                        <p><strong>Presunto:</strong> ${getQueijoPresunto('habito_presunto_check', 'habito_presunto_onde', 'habito_presunto_qtd')}</p>
+                        <p><strong>Bebidas nas Refeições:</strong> ${val('habito_bebida_refeicao')}</p>
+
                         <p><strong>Fritura:</strong> ${val('habito_fritura_freq')} (${val('habito_fritura_tipo')})</p>
                         <p><strong>Açúcar:</strong> ${val('habito_acucar_tipo')} - ${val('habito_acucar_detalhe')}</p>
                         <p><strong>Sal:</strong> ${val('habito_sal_tipo')} - ${val('habito_sal_freq')}</p>
