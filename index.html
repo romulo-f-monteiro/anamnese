@@ -80,15 +80,20 @@
             display: block;
         }
 
-        /* Animação para campos 'Outros' */
-        .other-input {
+        /* Animação para campos 'Outros' e Inputs ocultos */
+        .other-input, .hidden-input-group {
             display: none;
             margin-top: 8px;
             animation: slideDown 0.3s ease-out;
         }
-        .other-input.active {
-            display: block;
+        .other-input.active, .hidden-input-group.active {
+            display: flex; /* Alterado para flex para alinhar inputs */
         }
+        
+        /* Helper class para mostrar selects simples */
+        select.hidden { display: none; }
+        select.active { display: block; }
+
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -138,19 +143,31 @@
             <div class="step-content active" data-step="1">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
                     <h2 class="text-2xl font-bold text-secondary mb-2">Vamos nos conhecer?</h2>
-                    <p class="text-gray-500 mb-6">Preencha seus dados básicos para iniciarmos o perfil.</p>
+                    <!-- Texto alterado conforme solicitado -->
+                    <p class="text-gray-500 mb-6">Preencha as informações a seguir para darmos início ao atendimento.</p>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="col-span-2">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
                             <input type="text" name="nome" required class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors placeholder-gray-400" placeholder="Ex: Maria da Silva">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Idade</label>
-                            <input type="number" name="idade" class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors" placeholder="Anos">
+                        
+                        <!-- Ajuste de Layout: Idade, Altura e Peso na mesma linha (grid de 3 colunas) -->
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Idade</label>
+                                <input type="number" name="idade" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition-colors text-center" placeholder="Anos">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Altura</label>
+                                <input type="number" name="altura" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition-colors text-center" placeholder="cm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Peso</label>
+                                <input type="number" name="peso" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition-colors text-center" placeholder="kg">
+                            </div>
                         </div>
                         
-                        <!-- Nova pergunta Moradia -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Mora com quantas pessoas?</label>
                             <select name="moradia" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
@@ -160,15 +177,6 @@
                                 <option value="2 pessoas">Com 2 pessoas</option>
                                 <option value="3+ pessoas">Com 3 ou mais pessoas</option>
                             </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Altura (cm)</label>
-                            <input type="number" name="altura" class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors" placeholder="Ex: 165">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Peso Atual (kg)</label>
-                            <input type="number" name="peso" step="0.1" class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors" placeholder="Ex: 70.5">
                         </div>
                     </div>
                 </div>
@@ -185,7 +193,6 @@
                             <textarea name="objetivo" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Ex: Emagrecer, ganhar massa muscular..."></textarea>
                         </div>
 
-                        <!-- Nova pergunta expectativa -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">O que você espera conseguir com a minha ajuda?</label>
                             <textarea name="expectativa_ajuda" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Ex: Melhorar minha relação com a comida, ter mais disciplina..."></textarea>
@@ -277,132 +284,153 @@
                             </select>
                         </div>
 
-                        <!-- Atividade Física (Nova Lógica com Frequência Individual + Outros) -->
+                        <!-- Atividade Física (Com Horário) -->
                         <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
                             <h3 class="font-semibold text-blue-800 mb-3"><i class="fa-solid fa-person-running mr-2"></i>Atividade Física</h3>
-                            <label class="block text-xs text-gray-500 mb-2">Selecione e indique a frequência:</label>
+                            <label class="block text-xs text-gray-500 mb-2">Selecione, indique a frequência e o horário:</label>
                             
                             <div class="space-y-2 mb-3">
                                 <!-- Musculação -->
-                                <div class="p-2 bg-white rounded border border-blue-100">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="atv_check_musculacao" class="text-primary rounded toggle-freq">
-                                            <span class="text-sm">Musculação</span>
-                                        </label>
-                                        <select name="atv_freq_musculacao" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_musc_outro">
-                                            <option value="1-2x">1-2x semana</option>
-                                            <option value="3-4x">3-4x semana</option>
-                                            <option value="5x+">5x ou mais</option>
-                                            <option value="Outros">Outros</option>
-                                        </select>
+                                <div class="p-3 bg-white rounded border border-blue-100">
+                                    <label class="flex items-center gap-2 cursor-pointer mb-2">
+                                        <input type="checkbox" name="atv_check_musculacao" class="text-primary rounded toggle-freq-time">
+                                        <span class="text-sm font-medium">Musculação</span>
+                                    </label>
+                                    <div class="hidden-input-group flex-col gap-2">
+                                        <div class="flex gap-2">
+                                            <select name="atv_freq_musculacao" class="w-2/3 text-xs border rounded p-2 bg-gray-50 toggle-other" data-target="atv_musc_outro">
+                                                <option value="1-2x">1-2x semana</option>
+                                                <option value="3-4x">3-4x semana</option>
+                                                <option value="5x+">5x ou mais</option>
+                                                <option value="Outros">Outros</option>
+                                            </select>
+                                            <input type="text" name="atv_horario_musculacao" class="w-1/3 text-xs border rounded p-2 bg-gray-50" placeholder="Horário">
+                                        </div>
+                                        <input type="text" name="atv_musc_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
-                                    <input type="text" name="atv_musc_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
                                 </div>
 
                                 <!-- Corrida -->
-                                <div class="p-2 bg-white rounded border border-blue-100">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="atv_check_corrida" class="text-primary rounded toggle-freq">
-                                            <span class="text-sm">Corrida</span>
-                                        </label>
-                                        <select name="atv_freq_corrida" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_corrida_outro">
-                                            <option value="1-2x">1-2x semana</option>
-                                            <option value="3-4x">3-4x semana</option>
-                                            <option value="5x+">5x ou mais</option>
-                                            <option value="Outros">Outros</option>
-                                        </select>
+                                <div class="p-3 bg-white rounded border border-blue-100">
+                                    <label class="flex items-center gap-2 cursor-pointer mb-2">
+                                        <input type="checkbox" name="atv_check_corrida" class="text-primary rounded toggle-freq-time">
+                                        <span class="text-sm font-medium">Corrida</span>
+                                    </label>
+                                    <div class="hidden-input-group flex-col gap-2">
+                                        <div class="flex gap-2">
+                                            <select name="atv_freq_corrida" class="w-2/3 text-xs border rounded p-2 bg-gray-50 toggle-other" data-target="atv_corrida_outro">
+                                                <option value="1-2x">1-2x semana</option>
+                                                <option value="3-4x">3-4x semana</option>
+                                                <option value="5x+">5x ou mais</option>
+                                                <option value="Outros">Outros</option>
+                                            </select>
+                                            <input type="text" name="atv_horario_corrida" class="w-1/3 text-xs border rounded p-2 bg-gray-50" placeholder="Horário">
+                                        </div>
+                                        <input type="text" name="atv_corrida_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
-                                    <input type="text" name="atv_corrida_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
                                 </div>
 
                                 <!-- Bike -->
-                                <div class="p-2 bg-white rounded border border-blue-100">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="atv_check_bike" class="text-primary rounded toggle-freq">
-                                            <span class="text-sm">Bike / Bicicleta</span>
-                                        </label>
-                                        <select name="atv_freq_bike" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_bike_outro">
-                                            <option value="1-2x">1-2x semana</option>
-                                            <option value="3-4x">3-4x semana</option>
-                                            <option value="5x+">5x ou mais</option>
-                                            <option value="Outros">Outros</option>
-                                        </select>
+                                <div class="p-3 bg-white rounded border border-blue-100">
+                                    <label class="flex items-center gap-2 cursor-pointer mb-2">
+                                        <input type="checkbox" name="atv_check_bike" class="text-primary rounded toggle-freq-time">
+                                        <span class="text-sm font-medium">Bike / Bicicleta</span>
+                                    </label>
+                                    <div class="hidden-input-group flex-col gap-2">
+                                        <div class="flex gap-2">
+                                            <select name="atv_freq_bike" class="w-2/3 text-xs border rounded p-2 bg-gray-50 toggle-other" data-target="atv_bike_outro">
+                                                <option value="1-2x">1-2x semana</option>
+                                                <option value="3-4x">3-4x semana</option>
+                                                <option value="5x+">5x ou mais</option>
+                                                <option value="Outros">Outros</option>
+                                            </select>
+                                            <input type="text" name="atv_horario_bike" class="w-1/3 text-xs border rounded p-2 bg-gray-50" placeholder="Horário">
+                                        </div>
+                                        <input type="text" name="atv_bike_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
-                                    <input type="text" name="atv_bike_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
                                 </div>
 
                                 <!-- Natação -->
-                                <div class="p-2 bg-white rounded border border-blue-100">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="atv_check_natacao" class="text-primary rounded toggle-freq">
-                                            <span class="text-sm">Natação</span>
-                                        </label>
-                                        <select name="atv_freq_natacao" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_natacao_outro">
-                                            <option value="1-2x">1-2x semana</option>
-                                            <option value="3-4x">3-4x semana</option>
-                                            <option value="5x+">5x ou mais</option>
-                                            <option value="Outros">Outros</option>
-                                        </select>
+                                <div class="p-3 bg-white rounded border border-blue-100">
+                                    <label class="flex items-center gap-2 cursor-pointer mb-2">
+                                        <input type="checkbox" name="atv_check_natacao" class="text-primary rounded toggle-freq-time">
+                                        <span class="text-sm font-medium">Natação</span>
+                                    </label>
+                                    <div class="hidden-input-group flex-col gap-2">
+                                        <div class="flex gap-2">
+                                            <select name="atv_freq_natacao" class="w-2/3 text-xs border rounded p-2 bg-gray-50 toggle-other" data-target="atv_natacao_outro">
+                                                <option value="1-2x">1-2x semana</option>
+                                                <option value="3-4x">3-4x semana</option>
+                                                <option value="5x+">5x ou mais</option>
+                                                <option value="Outros">Outros</option>
+                                            </select>
+                                            <input type="text" name="atv_horario_natacao" class="w-1/3 text-xs border rounded p-2 bg-gray-50" placeholder="Horário">
+                                        </div>
+                                        <input type="text" name="atv_natacao_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
-                                    <input type="text" name="atv_natacao_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
                                 </div>
 
                                 <!-- Lutas -->
-                                <div class="p-2 bg-white rounded border border-blue-100">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="atv_check_lutas" class="text-primary rounded toggle-freq">
-                                            <span class="text-sm">Boxe/Lutas</span>
-                                        </label>
-                                        <select name="atv_freq_lutas" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_lutas_outro">
-                                            <option value="1-2x">1-2x semana</option>
-                                            <option value="3-4x">3-4x semana</option>
-                                            <option value="5x+">5x ou mais</option>
-                                            <option value="Outros">Outros</option>
-                                        </select>
+                                <div class="p-3 bg-white rounded border border-blue-100">
+                                    <label class="flex items-center gap-2 cursor-pointer mb-2">
+                                        <input type="checkbox" name="atv_check_lutas" class="text-primary rounded toggle-freq-time">
+                                        <span class="text-sm font-medium">Boxe/Lutas</span>
+                                    </label>
+                                    <div class="hidden-input-group flex-col gap-2">
+                                        <div class="flex gap-2">
+                                            <select name="atv_freq_lutas" class="w-2/3 text-xs border rounded p-2 bg-gray-50 toggle-other" data-target="atv_lutas_outro">
+                                                <option value="1-2x">1-2x semana</option>
+                                                <option value="3-4x">3-4x semana</option>
+                                                <option value="5x+">5x ou mais</option>
+                                                <option value="Outros">Outros</option>
+                                            </select>
+                                            <input type="text" name="atv_horario_lutas" class="w-1/3 text-xs border rounded p-2 bg-gray-50" placeholder="Horário">
+                                        </div>
+                                        <input type="text" name="atv_lutas_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
-                                    <input type="text" name="atv_lutas_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
                                 </div>
 
                                 <!-- Caminhada -->
-                                <div class="p-2 bg-white rounded border border-blue-100">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="atv_check_caminhada" class="text-primary rounded toggle-freq">
-                                            <span class="text-sm">Caminhada</span>
-                                        </label>
-                                        <select name="atv_freq_caminhada" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_caminhada_outro">
-                                            <option value="1-2x">1-2x semana</option>
-                                            <option value="3-4x">3-4x semana</option>
-                                            <option value="5x+">5x ou mais</option>
-                                            <option value="Todo dia">Todo dia</option>
-                                            <option value="Outros">Outros</option>
-                                        </select>
+                                <div class="p-3 bg-white rounded border border-blue-100">
+                                    <label class="flex items-center gap-2 cursor-pointer mb-2">
+                                        <input type="checkbox" name="atv_check_caminhada" class="text-primary rounded toggle-freq-time">
+                                        <span class="text-sm font-medium">Caminhada</span>
+                                    </label>
+                                    <div class="hidden-input-group flex-col gap-2">
+                                        <div class="flex gap-2">
+                                            <select name="atv_freq_caminhada" class="w-2/3 text-xs border rounded p-2 bg-gray-50 toggle-other" data-target="atv_caminhada_outro">
+                                                <option value="1-2x">1-2x semana</option>
+                                                <option value="3-4x">3-4x semana</option>
+                                                <option value="5x+">5x ou mais</option>
+                                                <option value="Todo dia">Todo dia</option>
+                                                <option value="Outros">Outros</option>
+                                            </select>
+                                            <input type="text" name="atv_horario_caminhada" class="w-1/3 text-xs border rounded p-2 bg-gray-50" placeholder="Horário">
+                                        </div>
+                                        <input type="text" name="atv_caminhada_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
-                                    <input type="text" name="atv_caminhada_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
                                 </div>
 
                                 <!-- Deslocamento -->
-                                <div class="p-2 bg-white rounded border border-blue-100">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="atv_check_deslocamento" class="text-primary rounded toggle-freq">
-                                            <div class="flex flex-col">
-                                                <span class="text-sm">Deslocamento Ativo</span>
-                                                <span class="text-xs text-gray-400">Ir a pé/bike para trabalho ou escola</span>
-                                            </div>
-                                        </label>
-                                        <select name="atv_freq_deslocamento" class="text-xs border rounded p-1 hidden bg-gray-50 toggle-other" data-target="atv_desloc_outro">
-                                            <option value="Todo dia">Todo dia</option>
-                                            <option value="As vezes">Às vezes</option>
-                                            <option value="Outros">Outros</option>
-                                        </select>
+                                <div class="p-3 bg-white rounded border border-blue-100">
+                                    <label class="flex items-center gap-2 cursor-pointer mb-2">
+                                        <input type="checkbox" name="atv_check_deslocamento" class="text-primary rounded toggle-freq-time">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-medium">Deslocamento Ativo</span>
+                                            <span class="text-xs text-gray-400">Ir a pé/bike para trabalho ou escola</span>
+                                        </div>
+                                    </label>
+                                    <div class="hidden-input-group flex-col gap-2">
+                                        <div class="flex gap-2">
+                                            <select name="atv_freq_deslocamento" class="w-2/3 text-xs border rounded p-2 bg-gray-50 toggle-other" data-target="atv_desloc_outro">
+                                                <option value="Todo dia">Todo dia</option>
+                                                <option value="As vezes">Às vezes</option>
+                                                <option value="Outros">Outros</option>
+                                            </select>
+                                            <input type="text" name="atv_horario_deslocamento" class="w-1/3 text-xs border rounded p-2 bg-gray-50" placeholder="Horário">
+                                        </div>
+                                        <input type="text" name="atv_desloc_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
-                                    <input type="text" name="atv_desloc_outro" class="w-full mt-2 text-xs border rounded p-1 other-input" placeholder="Escreva a frequência...">
                                 </div>
                             </div>
                             
@@ -568,7 +596,9 @@
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-mug-hot mr-1 text-orange-400"></i>Café da Manhã</label>
                                 <input type="time" name="horario_cafe" class="text-xs border rounded px-1">
                             </div>
-                            <input type="text" name="rec_cafe" class="w-full p-2 bg-white rounded border border-gray-200 text-sm" placeholder="Ex: 2 ovos, café preto...">
+                            <!-- Alterado para TEXTAREA para quebra de linha -->
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <textarea name="rec_cafe" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Ex: 2 ovos, café preto..."></textarea>
                         </div>
 
                         <!-- Lanche Manhã -->
@@ -577,7 +607,8 @@
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-apple-whole mr-1 text-red-400"></i>Lanche da Manhã</label>
                                 <input type="time" name="horario_lanche1" class="text-xs border rounded px-1">
                             </div>
-                            <input type="text" name="rec_lanche1" class="w-full p-2 bg-white rounded border border-gray-200 text-sm">
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <textarea name="rec_lanche1" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
                         </div>
 
                         <!-- Almoço -->
@@ -586,7 +617,8 @@
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-utensils mr-1 text-green-600"></i>Almoço</label>
                                 <input type="time" name="horario_almoco" class="text-xs border rounded px-1">
                             </div>
-                            <textarea name="rec_almoco" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm" placeholder="Detalhe as quantidades..."></textarea>
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <textarea name="rec_almoco" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Detalhe as quantidades..."></textarea>
                         </div>
 
                         <!-- Lanche Tarde -->
@@ -595,7 +627,8 @@
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-cookie-bite mr-1 text-yellow-600"></i>Lanche da Tarde</label>
                                 <input type="time" name="horario_lanche2" class="text-xs border rounded px-1">
                             </div>
-                            <input type="text" name="rec_lanche2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm">
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <textarea name="rec_lanche2" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
                         </div>
 
                         <!-- Jantar -->
@@ -604,7 +637,8 @@
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-bowl-food mr-1 text-blue-600"></i>Jantar</label>
                                 <input type="time" name="horario_jantar" class="text-xs border rounded px-1">
                             </div>
-                            <textarea name="rec_jantar" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm"></textarea>
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <textarea name="rec_jantar" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
                         </div>
 
                         <!-- Ceia -->
@@ -613,22 +647,24 @@
                                 <label class="font-bold text-sm text-indigo-700"><i class="fa-solid fa-moon mr-1"></i>Ceia (Antes de dormir)</label>
                                 <input type="time" name="horario_ceia" class="text-xs border rounded px-1">
                             </div>
-                            <input type="text" name="rec_ceia" class="w-full p-2 bg-white rounded border border-indigo-100 text-sm" placeholder="Chá, fruta, iogurte?">
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <textarea name="rec_ceia" rows="3" class="w-full p-2 bg-white rounded border border-indigo-100 text-sm resize-y" placeholder="Chá, fruta, iogurte?"></textarea>
                         </div>
 
                         <!-- Beliscos -->
                         <div class="border border-red-200 rounded-xl p-3 bg-red-50">
                             <label class="font-bold text-sm text-red-700 block mb-1"><i class="fa-solid fa-hand-holding mr-1"></i>Beliscos / Extras</label>
-                            <input type="text" name="rec_beliscos" class="w-full p-2 bg-white rounded border border-red-100 text-sm" placeholder="Balinhas, café com açúcar, provinhas enquanto cozinha...">
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <textarea name="rec_beliscos" rows="3" class="w-full p-2 bg-white rounded border border-red-100 text-sm resize-y" placeholder="Balinhas, café com açúcar, provinhas enquanto cozinha..."></textarea>
                         </div>
 
-                         <!-- Pré Treino (Movido para o final) -->
+                         <!-- Pré Treino (Sem o comentário extra, conforme pedido) -->
                          <div class="border border-purple-200 rounded-xl p-3 bg-purple-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-purple-700"><i class="fa-solid fa-dumbbell mr-1"></i>Pré-Treino (Se houver)</label>
                                 <input type="time" name="horario_pretreino" class="text-xs border rounded px-1">
                             </div>
-                            <input type="text" name="rec_pretreino" class="w-full p-2 bg-white rounded border border-purple-100 text-sm" placeholder="O que come antes de treinar?">
+                            <textarea name="rec_pretreino" rows="3" class="w-full p-2 bg-white rounded border border-purple-100 text-sm resize-y" placeholder="O que come antes de treinar?"></textarea>
                         </div>
 
                         <!-- NOVO BLOCO: Hábitos de Preparo e Rotina -->
@@ -939,18 +975,17 @@
     <script>
         // --- 1. LÓGICA DE INTERFACE ---
         
-        // Toggle de Frequência nos Checkboxes (Genérico)
+        // Toggle de Frequência Simples nos Checkboxes
         document.querySelectorAll('.toggle-freq').forEach(chk => {
             chk.addEventListener('change', function() {
-                const parent = this.closest('div'); // Ajuste para container
-                const select = parent.querySelector('select'); // Busca select irmão ou próximo
-                if (!select) return; // Segurança
+                const parent = this.closest('div');
+                const select = parent.querySelector('select');
+                if (!select) return;
 
                 if(this.checked) {
                     select.classList.remove('hidden');
                 } else {
                     select.classList.add('hidden');
-                    // Se ocultar, também limpa e oculta o input "Outros" se houver
                     if(select.value === 'Outros') {
                         const targetName = select.dataset.target;
                         const otherInput = document.querySelector(`input[name="${targetName}"]`);
@@ -959,6 +994,32 @@
                             otherInput.value = '';
                         }
                         select.value = select.options[0].value;
+                    }
+                }
+            });
+        });
+
+        // Toggle de Frequência COM Horário (Para Atividades Físicas)
+        document.querySelectorAll('.toggle-freq-time').forEach(chk => {
+            chk.addEventListener('change', function() {
+                const parent = this.closest('div'); // O container pai
+                const inputGroup = parent.querySelector('.hidden-input-group'); // O grupo que contém select e input de horário
+                if (!inputGroup) return;
+
+                if(this.checked) {
+                    inputGroup.classList.add('active');
+                } else {
+                    inputGroup.classList.remove('active');
+                    // Resetar valores se desmarcar
+                    const select = inputGroup.querySelector('select');
+                    const timeInput = inputGroup.querySelector('input[placeholder="Horário"]');
+                    const otherInput = parent.querySelector('.other-input');
+                    
+                    if(select) select.value = select.options[0].value;
+                    if(timeInput) timeInput.value = '';
+                    if(otherInput) {
+                        otherInput.classList.remove('active');
+                        otherInput.value = '';
                     }
                 }
             });
@@ -1078,15 +1139,18 @@
                  return el ? el.value : 'Não informado';
             };
             
-            // Helper para Atividades Físicas com Frequência + Outros
-            const getAtv = (nameCheck, nameFreq, nameOther) => {
+            // Helper para Atividades Físicas com Frequência + Horário + Outros
+            const getAtv = (nameCheck, nameFreq, nameTime, nameOther) => {
                 const check = form.querySelector(`input[name="${nameCheck}"]`);
                 if(check && check.checked) {
                     let freq = form.querySelector(`select[name="${nameFreq}"]`).value;
+                    let time = form.querySelector(`input[name="${nameTime}"]`).value;
+                    let timeStr = time ? ` às ${time}` : '';
+
                     if(freq === 'Outros' && nameOther) {
                         freq = form.querySelector(`input[name="${nameOther}"]`).value || 'Outros (Não especificado)';
                     }
-                    return `${freq}`;
+                    return `${freq}${timeStr}`;
                 }
                 return null;
             };
@@ -1131,13 +1195,13 @@
 
             // 3. Comportamentos
             let atvList = [];
-            const a1 = getAtv('atv_check_musculacao', 'atv_freq_musculacao', 'atv_musc_outro'); if(a1) atvList.push(`Musculação (${a1})`);
-            const a2 = getAtv('atv_check_corrida', 'atv_freq_corrida', 'atv_corrida_outro'); if(a2) atvList.push(`Corrida (${a2})`);
-            const a3 = getAtv('atv_check_bike', 'atv_freq_bike', 'atv_bike_outro'); if(a3) atvList.push(`Bike (${a3})`);
-            const a4 = getAtv('atv_check_natacao', 'atv_freq_natacao', 'atv_natacao_outro'); if(a4) atvList.push(`Natação (${a4})`);
-            const a5 = getAtv('atv_check_lutas', 'atv_freq_lutas', 'atv_lutas_outro'); if(a5) atvList.push(`Lutas (${a5})`);
-            const a6 = getAtv('atv_check_caminhada', 'atv_freq_caminhada', 'atv_caminhada_outro'); if(a6) atvList.push(`Caminhada (${a6})`);
-            const a7 = getAtv('atv_check_deslocamento', 'atv_freq_deslocamento', 'atv_desloc_outro'); if(a7) atvList.push(`Desloc. Ativo (${a7})`);
+            const a1 = getAtv('atv_check_musculacao', 'atv_freq_musculacao', 'atv_horario_musculacao', 'atv_musc_outro'); if(a1) atvList.push(`Musculação (${a1})`);
+            const a2 = getAtv('atv_check_corrida', 'atv_freq_corrida', 'atv_horario_corrida', 'atv_corrida_outro'); if(a2) atvList.push(`Corrida (${a2})`);
+            const a3 = getAtv('atv_check_bike', 'atv_freq_bike', 'atv_horario_bike', 'atv_bike_outro'); if(a3) atvList.push(`Bike (${a3})`);
+            const a4 = getAtv('atv_check_natacao', 'atv_freq_natacao', 'atv_horario_natacao', 'atv_natacao_outro'); if(a4) atvList.push(`Natação (${a4})`);
+            const a5 = getAtv('atv_check_lutas', 'atv_freq_lutas', 'atv_horario_lutas', 'atv_lutas_outro'); if(a5) atvList.push(`Lutas (${a5})`);
+            const a6 = getAtv('atv_check_caminhada', 'atv_freq_caminhada', 'atv_horario_caminhada', 'atv_caminhada_outro'); if(a6) atvList.push(`Caminhada (${a6})`);
+            const a7 = getAtv('atv_check_deslocamento', 'atv_freq_deslocamento', 'atv_horario_deslocamento', 'atv_desloc_outro'); if(a7) atvList.push(`Desloc. Ativo (${a7})`);
 
             html += `
                 <div class="pdf-section">
@@ -1159,21 +1223,21 @@
                 <div class="pdf-section">
                     <h2>4. Recordatório 24h & Hábitos</h2>
                     <div style="background:#f9fafb; padding:10px; border-radius:5px; font-size:11px; margin-bottom: 10px;">
-                        <p><strong>Café (${val('horario_cafe')}):</strong> ${val('rec_cafe')}</p>
+                        <p><strong>Café (${val('horario_cafe')}):</strong><br/>${val('rec_cafe')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Lanche Manhã (${val('horario_lanche1')}):</strong> ${val('rec_lanche1')}</p>
+                        <p><strong>Lanche Manhã (${val('horario_lanche1')}):</strong><br/>${val('rec_lanche1')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Almoço (${val('horario_almoco')}):</strong> ${val('rec_almoco')}</p>
+                        <p><strong>Almoço (${val('horario_almoco')}):</strong><br/>${val('rec_almoco')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Lanche Tarde (${val('horario_lanche2')}):</strong> ${val('rec_lanche2')}</p>
+                        <p><strong>Lanche Tarde (${val('horario_lanche2')}):</strong><br/>${val('rec_lanche2')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Jantar (${val('horario_jantar')}):</strong> ${val('rec_jantar')}</p>
+                        <p><strong>Jantar (${val('horario_jantar')}):</strong><br/>${val('rec_jantar')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Ceia (${val('horario_ceia')}):</strong> ${val('rec_ceia')}</p>
+                        <p><strong>Ceia (${val('horario_ceia')}):</strong><br/>${val('rec_ceia')}</p>
                          <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                         <p><strong>Beliscos:</strong> ${val('rec_beliscos')}</p>
+                         <p><strong>Beliscos:</strong><br/>${val('rec_beliscos')}</p>
                          <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                         <p><strong>Pré-Treino (${val('horario_pretreino')}):</strong> ${val('rec_pretreino')}</p>
+                         <p><strong>Pré-Treino (${val('horario_pretreino')}):</strong><br/>${val('rec_pretreino')}</p>
                     </div>
                     
                     <div style="font-size:11px;">
@@ -1276,4 +1340,5 @@
         });
     </script>
 </body>
+
 </html>
