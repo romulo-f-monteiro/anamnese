@@ -30,6 +30,9 @@
                         secondary: '#065F46',
                         background: '#F3F4F6',
                         surface: '#FFFFFF',
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
@@ -97,6 +100,23 @@
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilo para o Aviso Piscando */
+        @keyframes blink-alert {
+            0%, 100% { color: #DC2626; opacity: 1; transform: scale(1); }
+            50% { color: #991B1B; opacity: 0.8; transform: scale(1.02); }
+        }
+        .blink-warning {
+            animation: blink-alert 1.2s infinite;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+            border: 2px solid #EF4444;
+            background-color: #FEF2F2;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
 
         /* PDF Styles */
@@ -1023,7 +1043,12 @@
                     </div>
                     
                     <div class="flex flex-col gap-3 items-center justify-center">
-                         <p class="text-sm text-gray-500 mb-2">Tudo pronto? Gere seu PDF abaixo e enviei para o profissional.</p>
+                         <!-- AVISO PISCANDO -->
+                         <div class="blink-warning w-full text-red-600">
+                            Tudo pronto? Gere seu PDF abaixo e enviei para o profissional.<br>
+                            LEMBRANDO! Precisa enviar o para o seu nutricionista
+                         </div>
+
                          <button type="button" onclick="generateAndDownloadPDF()" class="w-full sm:w-auto bg-primary text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:bg-green-600 transition-all transform hover:scale-105 flex items-center justify-center gap-3 text-lg">
                             <i class="fa-solid fa-file-pdf text-2xl"></i> Gerar e Enviar PDF
                          </button>
@@ -1060,6 +1085,71 @@
 
     <!-- Lógica da Aplicação -->
     <script>
+        // --- 0. PERSISTÊNCIA DE DADOS (LOCAL STORAGE) ---
+        
+        function saveFormData() {
+            const formData = {};
+            // Salva inputs, selects e textareas
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if(input.name) {
+                    if (input.type === 'radio') {
+                        if (input.checked) formData[input.name] = input.value;
+                    } else if (input.type === 'checkbox') {
+                        formData[input.name] = input.checked;
+                    } else {
+                        formData[input.name] = input.value;
+                    }
+                }
+            });
+            
+            // Salva dados e o passo atual
+            localStorage.setItem('anamneseData', JSON.stringify(formData));
+            localStorage.setItem('anamneseStep', currentStep);
+        }
+
+        function loadFormData() {
+            const savedData = JSON.parse(localStorage.getItem('anamneseData'));
+            const savedStep = parseInt(localStorage.getItem('anamneseStep'));
+
+            // Recupera o passo
+            if (savedStep && !isNaN(savedStep)) {
+                currentStep = savedStep;
+            }
+
+            // Recupera os dados
+            if (savedData) {
+                for (const [name, value] of Object.entries(savedData)) {
+                    const inputs = document.querySelectorAll(`[name="${name}"]`);
+                    if (inputs.length > 0) {
+                        const input = inputs[0]; // Pega o primeiro ou itera para radios
+                        
+                        if (input.type === 'radio') {
+                            const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
+                            if (radio) radio.checked = true;
+                        } 
+                        else if (input.type === 'checkbox') {
+                            input.checked = value;
+                            // Dispara evento para reativar toggles visuais
+                            input.dispatchEvent(new Event('change'));
+                        } 
+                        else {
+                            input.value = value;
+                            // Dispara evento para reativar toggles visuais de selects e range
+                            input.dispatchEvent(new Event('change'));
+                            if(input.type === 'range') input.dispatchEvent(new Event('input'));
+                        }
+                    }
+                }
+            }
+            updateUI();
+        }
+
+        // Adiciona listener para salvar em qualquer alteração
+        document.getElementById('anamneseForm').addEventListener('input', saveFormData);
+        document.getElementById('anamneseForm').addEventListener('change', saveFormData);
+
+
         // --- 1. LÓGICA DE INTERFACE ---
         
         // Toggle de Frequência Simples nos Checkboxes
@@ -1222,6 +1312,9 @@
             currentStep += n;
             if (currentStep < 1) currentStep = 1;
             if (currentStep > totalSteps) currentStep = totalSteps;
+            
+            // Salva o passo explicitamente ao mudar
+            localStorage.setItem('anamneseStep', currentStep);
             
             updateUI();
         }
@@ -1488,9 +1581,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateUI();
+            // Carrega os dados salvos antes de atualizar a UI
+            loadFormData();
         });
     </script>
 </body>
-
 </html>
