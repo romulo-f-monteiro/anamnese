@@ -595,59 +595,383 @@
                         <i class="fa-solid fa-utensils text-primary"></i> Alimentação
                     </h2>
                     <p class="text-gray-500 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
-                        <i class="fa-solid fa-circle-info mr-2"></i>Descreva sua alimentação com detalhes.
+                        <i class="fa-solid fa-circle-info mr-2"></i>Descreva sua alimentação com detalhes, será muito importante para elaboração da sua dieta.
                     </p>
 
                     <div class="space-y-4">
                         <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-mug-hot mr-1 text-orange-400"></i>Café da Manhã</label>
-                                <input type="time" name="horario_cafe" class="text-xs border rounded px-1">
                             </div>
                             <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
                             <textarea name="rec_cafe" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Ex: 2 ovos, café preto..."></textarea>
+                            
+                            <div id="extra_cafe_1" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no café da manhã:</p>
+                                <textarea name="rec_cafe_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+                            <div id="extra_cafe_2" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no café da manhã:</p>
+                                <textarea name="rec_cafe_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+
+                            <div class="mt-3 p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+                                <p class="text-xs font-bold text-gray-700 mb-2 border-b pb-1">Nesta refeição, costuma consumir quase sempre:</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Leite?</span>
+                                            <select name="cafe_hab_leite" class="text-xs border rounded p-1 toggle-yes-no" data-target="cafe_leite_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="cafe_leite_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="cafe_leite_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="Qual tipo de leite?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Frutas?</span>
+                                            <select name="cafe_hab_fruta" class="text-xs border rounded p-1 toggle-yes-no" data-target="cafe_fruta_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="cafe_fruta_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="cafe_fruta_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="Quais frutas?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Ovos?</span>
+                                            <select name="cafe_hab_ovo" class="text-xs border rounded p-1 toggle-yes-no" data-target="cafe_ovo_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="cafe_ovo_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="cafe_ovo_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="Como preparados?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Queijos?</span>
+                                            <select name="cafe_hab_queijo" class="text-xs border rounded p-1 toggle-yes-no" data-target="cafe_queijo_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="cafe_queijo_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="cafe_queijo_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="Qual tipo?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Presuntos?</span>
+                                            <select name="cafe_hab_presunto" class="text-xs border rounded p-1 toggle-yes-no" data-target="cafe_presunto_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="cafe_presunto_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="cafe_presunto_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="Qual tipo?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Açúcar?</span>
+                                            <select name="cafe_hab_acucar" class="text-xs border rounded p-1">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-apple-whole mr-1 text-red-400"></i>Lanche da Manhã</label>
-                                <input type="time" name="horario_lanche1" class="text-xs border rounded px-1">
                             </div>
                             <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
                             <textarea name="rec_lanche1" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                            
+                            <div id="extra_lanche1_1" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da manhã:</p>
+                                <textarea name="rec_lanche1_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+                            <div id="extra_lanche1_2" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da manhã:</p>
+                                <textarea name="rec_lanche1_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
                         </div>
 
                         <div class="border-l-4 border-green-500 rounded-r-xl p-3 bg-white shadow-sm">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-utensils mr-1 text-green-600"></i>Almoço</label>
-                                <input type="time" name="horario_almoco" class="text-xs border rounded px-1">
                             </div>
                             <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
                             <textarea name="rec_almoco" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Detalhe as quantidades..."></textarea>
+                            
+                            <div id="extra_almoco_1" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no almoço:</p>
+                                <textarea name="rec_almoco_op2" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+                            <div id="extra_almoco_2" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no almoço:</p>
+                                <textarea name="rec_almoco_op3" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+
+                            <div class="mt-3 p-3 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
+                                <p class="text-xs font-bold text-gray-700 mb-2 border-b pb-1">Nesta refeição, costuma consumir quase sempre:</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Suco?</span>
+                                            <select name="almoco_hab_suco" class="text-xs border rounded p-1 toggle-yes-no" data-target="almoco_suco_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="almoco_suco_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="almoco_suco_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Qual sabor?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Frutas?</span>
+                                            <select name="almoco_hab_fruta" class="text-xs border rounded p-1 toggle-yes-no" data-target="almoco_fruta_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="almoco_fruta_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="almoco_fruta_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Quais frutas?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Refrigerante?</span>
+                                            <select name="almoco_hab_refri" class="text-xs border rounded p-1 toggle-yes-no" data-target="almoco_refri_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="almoco_refri_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="almoco_refri_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Qual?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Doces?</span>
+                                            <select name="almoco_hab_doce" class="text-xs border rounded p-1 toggle-yes-no" data-target="almoco_doce_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="almoco_doce_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="almoco_doce_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Qual doce?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Molhos (ex: salada)?</span>
+                                            <select name="almoco_hab_molho" class="text-xs border rounded p-1 toggle-yes-no" data-target="almoco_molho_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="almoco_molho_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="almoco_molho_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Qual tipo?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Azeite?</span>
+                                            <select name="almoco_hab_azeite" class="text-xs border rounded p-1 toggle-yes-no" data-target="almoco_azeite_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="almoco_azeite_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="almoco_azeite_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Quantidade?">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-cookie-bite mr-1 text-yellow-600"></i>Lanche da Tarde</label>
-                                <input type="time" name="horario_lanche2" class="text-xs border rounded px-1">
                             </div>
                             <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
                             <textarea name="rec_lanche2" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                            
+                            <div id="extra_lanche2_1" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da tarde:</p>
+                                <textarea name="rec_lanche2_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+                            <div id="extra_lanche2_2" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da tarde:</p>
+                                <textarea name="rec_lanche2_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+
+                            <div class="mt-3 p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+                                <p class="text-xs font-bold text-gray-700 mb-2 border-b pb-1">Nesta refeição, costuma consumir quase sempre:</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Bolo?</span>
+                                            <select name="lanche2_hab_bolo" class="text-xs border rounded p-1 toggle-yes-no" data-target="lanche2_bolo_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="lanche2_bolo_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="lanche2_bolo_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="Qual sabor/tipo?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Salgado?</span>
+                                            <select name="lanche2_hab_salgado" class="text-xs border rounded p-1 toggle-yes-no" data-target="lanche2_salgado_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="lanche2_salgado_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="lanche2_salgado_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="Qual salgado?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Vitamina?</span>
+                                            <select name="lanche2_hab_vitamina" class="text-xs border rounded p-1 toggle-yes-no" data-target="lanche2_vitamina_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="lanche2_vitamina_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="lanche2_vitamina_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="De quê?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Bolachas?</span>
+                                            <select name="lanche2_hab_bolacha" class="text-xs border rounded p-1 toggle-yes-no" data-target="lanche2_bolacha_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="lanche2_bolacha_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="lanche2_bolacha_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-gray-50" placeholder="Qual bolacha?">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="border-l-4 border-blue-500 rounded-r-xl p-3 bg-white shadow-sm">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-bowl-food mr-1 text-blue-600"></i>Jantar</label>
-                                <input type="time" name="horario_jantar" class="text-xs border rounded px-1">
                             </div>
                             <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
                             <textarea name="rec_jantar" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                            
+                            <div id="extra_jantar_1" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no jantar:</p>
+                                <textarea name="rec_jantar_op2" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+                            <div id="extra_jantar_2" style="display: none;" class="mt-2">
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no jantar:</p>
+                                <textarea name="rec_jantar_op3" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                            </div>
+
+                            <div class="mt-3 p-3 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
+                                <p class="text-xs font-bold text-gray-700 mb-2 border-b pb-1">Nesta refeição, costuma consumir quase sempre:</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Suco?</span>
+                                            <select name="jantar_hab_suco" class="text-xs border rounded p-1 toggle-yes-no" data-target="jantar_suco_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="jantar_suco_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="jantar_suco_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Qual sabor?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Frutas?</span>
+                                            <select name="jantar_hab_fruta" class="text-xs border rounded p-1 toggle-yes-no" data-target="jantar_fruta_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="jantar_fruta_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="jantar_fruta_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Quais frutas?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Refrigerante?</span>
+                                            <select name="jantar_hab_refri" class="text-xs border rounded p-1 toggle-yes-no" data-target="jantar_refri_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="jantar_refri_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="jantar_refri_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Qual?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Doces?</span>
+                                            <select name="jantar_hab_doce" class="text-xs border rounded p-1 toggle-yes-no" data-target="jantar_doce_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="jantar_doce_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="jantar_doce_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Qual doce?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Molhos (ex: salada)?</span>
+                                            <select name="jantar_hab_molho" class="text-xs border rounded p-1 toggle-yes-no" data-target="jantar_molho_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="jantar_molho_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="jantar_molho_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Qual tipo?">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-600">Azeite?</span>
+                                            <select name="jantar_hab_azeite" class="text-xs border rounded p-1 toggle-yes-no" data-target="jantar_azeite_box">
+                                                <option value="Nao">Não</option>
+                                                <option value="Sim">Sim</option>
+                                            </select>
+                                        </div>
+                                        <div id="jantar_azeite_box" class="conditional-group mt-1 flex-col">
+                                            <input type="text" name="jantar_azeite_det" class="w-full text-xs p-1.5 border border-gray-300 rounded bg-white" placeholder="Quantidade?">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="border border-indigo-200 rounded-xl p-3 bg-indigo-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-indigo-700"><i class="fa-solid fa-moon mr-1"></i>Ceia (Antes de dormir)</label>
-                                <input type="time" name="horario_ceia" class="text-xs border rounded px-1">
                             </div>
                             <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
                             <textarea name="rec_ceia" rows="3" class="w-full p-2 bg-white rounded border border-indigo-100 text-sm resize-y" placeholder="Chá, fruta, iogurte?"></textarea>
@@ -662,7 +986,6 @@
                          <div class="border border-purple-200 rounded-xl p-3 bg-purple-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-purple-700"><i class="fa-solid fa-dumbbell mr-1"></i>Pré-Treino (Se houver)</label>
-                                <input type="time" name="horario_pretreino" class="text-xs border rounded px-1">
                             </div>
                             <textarea name="rec_pretreino" rows="3" class="w-full p-2 bg-white rounded border border-purple-100 text-sm resize-y" placeholder="O que come antes de treinar?"></textarea>
                         </div>
@@ -1163,6 +1486,51 @@
             });
         });
 
+        // --- 1.1 LOGICA DE OPÇÕES DE REFEIÇÃO EXTRAS ---
+        const setupMealVisibility = () => {
+            const mealsToSetup = ['cafe', 'lanche1', 'almoco', 'lanche2', 'jantar'];
+            mealsToSetup.forEach(meal => {
+                const mainInput = document.querySelector(`[name="rec_${meal}"]`);
+                const op2Input = document.querySelector(`[name="rec_${meal}_op2"]`);
+                const op3Input = document.querySelector(`[name="rec_${meal}_op3"]`);
+                const extra1 = document.getElementById(`extra_${meal}_1`);
+                const extra2 = document.getElementById(`extra_${meal}_2`);
+
+                if(mainInput && op2Input && op3Input) {
+                    const checkVisibility = () => {
+                        // Verifica se o input principal (o de ontem) tem texto
+                        if(mainInput.value.trim() !== '') {
+                            extra1.style.display = 'block';
+                            op2Input.setAttribute('required', 'required');
+                        } else {
+                            extra1.style.display = 'none';
+                            op2Input.removeAttribute('required');
+                            
+                            extra2.style.display = 'none';
+                            op3Input.removeAttribute('required');
+                        }
+
+                        // Verifica se a opção 2 tem texto e o principal também
+                        if(op2Input.value.trim() !== '' && mainInput.value.trim() !== '') {
+                            extra2.style.display = 'block';
+                            op3Input.setAttribute('required', 'required');
+                        } else {
+                            extra2.style.display = 'none';
+                            op3Input.removeAttribute('required');
+                        }
+                    };
+
+                    mainInput.addEventListener('input', checkVisibility);
+                    mainInput.addEventListener('change', checkVisibility);
+                    op2Input.addEventListener('input', checkVisibility);
+                    op2Input.addEventListener('change', checkVisibility);
+
+                    // Checagem inicial
+                    checkVisibility();
+                }
+            });
+        };
+
         // --- 2. LÓGICA DE NAVEGAÇÃO (WIZARD) ---
         let currentStep = 1;
         const totalSteps = 7;
@@ -1312,6 +1680,64 @@
                 return sel;
             };
 
+            // Novo Helper para capturar os hábitos por refeição (Leite, Frutas, Ovos, Queijos, Presuntos, Açúcar, etc)
+            const getMealHabits = (mealId) => {
+                const habits = [];
+                const check = (item, id, hasBox = true) => {
+                    const hab = val(`${mealId}_hab_${id}`);
+                    if (hab === 'Sim') {
+                        const det = hasBox ? val(`${mealId}_${id}_det`) : '';
+                        if (!hasBox || !det || det === 'Não informado') {
+                            habits.push(item);
+                        } else {
+                            habits.push(`${item} (${det})`);
+                        }
+                    }
+                };
+
+                if (mealId === 'cafe') {
+                    check('Leite', 'leite');
+                    check('Frutas', 'fruta');
+                    check('Ovos', 'ovo');
+                    check('Queijos', 'queijo');
+                    check('Presuntos', 'presunto');
+                    check('Açúcar', 'acucar', false);
+                } else if (mealId === 'almoco' || mealId === 'jantar') {
+                    check('Suco', 'suco');
+                    check('Frutas', 'fruta');
+                    check('Refrigerante', 'refri');
+                    check('Doces', 'doce');
+                    check('Molhos', 'molho');
+                    check('Azeite', 'azeite');
+                } else if (mealId === 'lanche2') {
+                    check('Bolo', 'bolo');
+                    check('Salgado', 'salgado');
+                    check('Vitamina', 'vitamina');
+                    check('Bolachas', 'bolacha');
+                }
+                
+                return habits.length > 0 ? `<br/><div style="margin-top:4px; padding:4px; background:#eef2ff; border-radius:3px; font-size:10px;"><strong>Hábitos na refeição:</strong> ${habits.join(', ')}</div>` : '';
+            };
+
+            // Helper para extrair texto composto das refeições (incluindo as novas opções)
+            const getMealText = (mealId) => {
+                let text = val(`rec_${mealId}`);
+                if (text === 'Não informado') return text;
+                
+                const op2 = val(`rec_${mealId}_op2`);
+                const op3 = val(`rec_${mealId}_op3`);
+                
+                if (op2 !== 'Não informado' && op2.trim() !== '') text += `<br/><strong>Opção 2:</strong> ${op2}`;
+                if (op3 !== 'Não informado' && op3.trim() !== '') text += `<br/><strong>Opção 3:</strong> ${op3}`;
+                
+                // Inclui os hábitos extras na hora de gerar o PDF
+                if (['cafe', 'almoco', 'lanche2', 'jantar'].includes(mealId)) {
+                    text += getMealHabits(mealId);
+                }
+
+                return text;
+            };
+
             // 1. Dados Pessoais
             html += `
                 <div class="pdf-section">
@@ -1370,21 +1796,21 @@
                 <div class="pdf-section">
                     <h2>4. Alimentação & Hábitos</h2>
                     <div style="background:#f9fafb; padding:10px; border-radius:5px; font-size:11px; margin-bottom: 10px;">
-                        <p><strong>Café (${val('horario_cafe')}):</strong><br/>${val('rec_cafe')}</p>
+                        <p><strong>Café da Manhã:</strong><br/>${getMealText('cafe')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Lanche Manhã (${val('horario_lanche1')}):</strong><br/>${val('rec_lanche1')}</p>
+                        <p><strong>Lanche Manhã:</strong><br/>${getMealText('lanche1')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Almoço (${val('horario_almoco')}):</strong><br/>${val('rec_almoco')}</p>
+                        <p><strong>Almoço:</strong><br/>${getMealText('almoco')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Lanche Tarde (${val('horario_lanche2')}):</strong><br/>${val('rec_lanche2')}</p>
+                        <p><strong>Lanche Tarde:</strong><br/>${getMealText('lanche2')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Jantar (${val('horario_jantar')}):</strong><br/>${val('rec_jantar')}</p>
+                        <p><strong>Jantar:</strong><br/>${getMealText('jantar')}</p>
                         <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                        <p><strong>Ceia (${val('horario_ceia')}):</strong><br/>${val('rec_ceia')}</p>
+                        <p><strong>Ceia:</strong><br/>${val('rec_ceia')}</p>
                          <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
                          <p><strong>Beliscos:</strong><br/>${val('rec_beliscos')}</p>
                          <hr style="border:0; border-top:1px dashed #ddd; margin:3px 0;">
-                         <p><strong>Pré-Treino (${val('horario_pretreino')}):</strong><br/>${val('rec_pretreino')}</p>
+                         <p><strong>Pré-Treino:</strong><br/>${val('rec_pretreino')}</p>
                     </div>
                     
                     <div style="font-size:11px;">
@@ -1502,6 +1928,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Carrega os dados salvos antes de atualizar a UI
             loadFormData();
+            // Inicia a checagem das novas opções de refeição extras
+            setupMealVisibility();
         });
     </script>
 </body>
