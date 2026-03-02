@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anamnese Nutricional Digital - RFM</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Biblioteca PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- Configuração do Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -136,11 +131,9 @@
 </head>
 <body class="text-gray-700 antialiased min-h-screen flex flex-col">
 
-    <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <!-- Sigla RFM -->
                 <div class="bg-primary text-white font-bold rounded-lg p-2 text-xl tracking-widest shadow-md">
                     RFM
                 </div>
@@ -148,18 +141,15 @@
             </div>
             <div class="text-sm text-gray-500 hidden sm:block">Nutrição Inteligente</div>
         </div>
-        <!-- Barra de Progresso -->
         <div class="w-full bg-gray-200 h-1.5">
             <div id="progress-bar" class="bg-primary h-1.5 transition-all duration-500" style="width: 0%"></div>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-8 max-w-3xl">
         
         <form id="anamneseForm" onsubmit="event.preventDefault()">
             
-            <!-- SEÇÃO 1: Dados Pessoais -->
             <div class="step-content active" data-step="1">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
                     <h2 class="text-2xl font-bold text-secondary mb-2">Vamos nos conhecer?</h2>
@@ -201,7 +191,6 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 2: Histórico e Objetivos -->
             <div class="step-content" data-step="2">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
                     <h2 class="text-2xl font-bold text-secondary mb-2">Histórico & Objetivos</h2>
@@ -222,7 +211,6 @@
                             <input type="text" name="meta_peso" class="w-full px-4 py-2 border border-green-200 rounded-lg" placeholder="Ex: Quero perder 5kg no total...">
                         </div>
 
-                        <!-- Novo Bloco: Sono -->
                         <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
                              <label class="block text-sm font-bold text-indigo-800 mb-3"><i class="fa-solid fa-bed mr-2"></i>Como está o seu sono?</label>
                              
@@ -259,7 +247,6 @@
                             <textarea name="dificuldade_mudanca" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Ex: Doce, ansiedade, falta de tempo..."></textarea>
                         </div>
 
-                        <!-- Estresse -->
                         <div class="flex items-center gap-4 bg-yellow-50 p-3 rounded-lg">
                             <i class="fa-solid fa-bolt text-yellow-500 text-xl animate-pulse"></i>
                             <div class="w-full">
@@ -295,7 +282,6 @@
                             </div>
                         </div>
 
-                        <!-- Investimento -->
                         <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-2">
                              <label class="block text-sm font-bold text-blue-800 mb-2"><i class="fa-solid fa-piggy-bank mr-2"></i>Quanto você está disposto(a) a investir em você hoje?</label>
                              <select name="investimento" class="w-full px-4 py-2 border border-white rounded-lg shadow-sm toggle-other" data-target="investimento_outro">
@@ -311,14 +297,12 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 3: Comportamentos -->
             <div class="step-content" data-step="3">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
                     <h2 class="text-2xl font-bold text-secondary mb-2">Comportamentos</h2>
                     
                     <div class="space-y-6">
                         
-                        <!-- Auto Avaliação -->
                         <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
                              <label class="block text-sm font-bold text-purple-800 mb-2"><i class="fa-solid fa-star mr-2"></i>Como você avalia sua alimentação hoje?</label>
                              <select name="avaliacao_alimentacao" class="w-full px-4 py-2 border border-white rounded-lg shadow-sm">
@@ -330,13 +314,11 @@
                             </select>
                         </div>
 
-                        <!-- Atividade Física (Lógica Mantida) -->
                         <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
                             <h3 class="font-semibold text-blue-800 mb-3"><i class="fa-solid fa-person-running mr-2"></i>Atividade Física</h3>
                             <label class="block text-xs text-gray-500 mb-2">Selecione, indique a frequência e o horário:</label>
                             
                             <div class="space-y-2 mb-3">
-                                <!-- Musculação -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
                                         <input type="checkbox" name="atv_check_musculacao" class="text-primary rounded toggle-freq-time">
@@ -355,7 +337,6 @@
                                         <input type="text" name="atv_musc_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-                                <!-- Corrida -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
                                         <input type="checkbox" name="atv_check_corrida" class="text-primary rounded toggle-freq-time">
@@ -374,7 +355,6 @@
                                         <input type="text" name="atv_corrida_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-                                <!-- Bike -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
                                         <input type="checkbox" name="atv_check_bike" class="text-primary rounded toggle-freq-time">
@@ -393,7 +373,6 @@
                                         <input type="text" name="atv_bike_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-                                <!-- Natação -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
                                         <input type="checkbox" name="atv_check_natacao" class="text-primary rounded toggle-freq-time">
@@ -412,7 +391,6 @@
                                         <input type="text" name="atv_natacao_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-                                <!-- Lutas -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
                                         <input type="checkbox" name="atv_check_lutas" class="text-primary rounded toggle-freq-time">
@@ -431,7 +409,6 @@
                                         <input type="text" name="atv_lutas_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-                                <!-- Caminhada -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
                                         <input type="checkbox" name="atv_check_caminhada" class="text-primary rounded toggle-freq-time">
@@ -451,7 +428,6 @@
                                         <input type="text" name="atv_caminhada_outro" class="w-full text-xs border rounded p-2 other-input" placeholder="Escreva a frequência...">
                                     </div>
                                 </div>
-                                <!-- Deslocamento -->
                                 <div class="p-3 bg-white rounded border border-blue-100">
                                     <label class="flex items-center gap-2 cursor-pointer mb-2">
                                         <input type="checkbox" name="atv_check_deslocamento" class="text-primary rounded toggle-freq-time">
@@ -477,8 +453,7 @@
                             <input type="text" name="atividade_outros" class="w-full px-4 py-2 border border-white rounded-lg shadow-sm" placeholder="Outra atividade? Qual e frequência?">
                         </div>
 
-                        <!-- Transporte (Carro) -->
-                         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
                             <label class="block text-sm font-bold text-gray-700 mb-2"><i class="fa-solid fa-car mr-2"></i>Costuma andar de carro/moto?</label>
                             <select name="transporte" class="w-full px-4 py-2 border border-white rounded-lg shadow-sm toggle-other" data-target="transporte_outro">
                                 <option value="Sim, muito">Sim, uso pra tudo</option>
@@ -489,7 +464,6 @@
                             <input type="text" name="transporte_outro" class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg other-input" placeholder="Especifique...">
                         </div>
 
-                        <!-- Água -->
                         <div class="bg-cyan-50 p-4 rounded-xl border border-cyan-100">
                             <label class="block text-sm font-medium text-cyan-800 mb-1"><i class="fa-solid fa-glass-water text-cyan-600 mr-1"></i> Ingestão de Água</label>
                             
@@ -513,7 +487,6 @@
                             </div>
                         </div>
 
-                        <!-- Jejum (Animação Sim/Não) -->
                         <div class="bg-orange-50 p-4 rounded-xl border border-orange-100">
                             <label class="block text-sm font-medium text-orange-800 mb-3"><i class="fa-solid fa-clock mr-1"></i> Jejum Intermitente</label>
                             
@@ -546,7 +519,6 @@
                             </div>
                         </div>
 
-                        <!-- Álcool (Novo Select) -->
                         <div>
                             <label class="block text-sm text-gray-700 font-medium mb-1"><i class="fa-solid fa-wine-glass mr-1 text-red-400"></i> Consome Álcool?</label>
                             <select name="alcool" class="w-full border rounded px-3 py-2 text-sm toggle-other" data-target="alcool_outro">
@@ -561,8 +533,7 @@
                             <input type="text" name="alcool_outro" class="w-full px-3 py-2 mt-2 border border-red-200 rounded text-sm other-input" placeholder="Detalhe...">
                         </div>
 
-                        <!-- Fumo -->
-                         <div>
+                        <div>
                             <label class="block text-sm text-gray-700 font-medium mb-1"><i class="fa-solid fa-smoking mr-1 text-gray-500"></i> Fuma?</label>
                             <select name="fuma" class="w-full border rounded px-3 py-2 text-sm toggle-other" data-target="fuma_outro">
                                 <option value="nao">Não</option>
@@ -573,7 +544,6 @@
                             <input type="text" name="fuma_outro" class="w-full px-3 py-2 mt-2 border border-gray-300 rounded text-sm other-input" placeholder="Detalhe...">
                         </div>
 
-                        <!-- Tempo Sentado (Novo Select) -->
                         <div>
                             <label class="block text-sm text-gray-700 font-medium mb-1"><i class="fa-solid fa-chair mr-1 text-brown-500"></i> Tempo sentado/dia</label>
                             <select name="tempo_sentado" class="w-full border rounded px-3 py-2 text-sm toggle-other" data-target="sentado_outro">
@@ -586,7 +556,6 @@
                             <input type="text" name="sentado_outro" class="w-full px-3 py-2 mt-2 border border-gray-300 rounded text-sm other-input" placeholder="Detalhe...">
                         </div>
 
-                        <!-- Tempo Telas (Novo Select) -->
                         <div>
                             <label class="block text-sm text-gray-700 font-medium mb-1"><i class="fa-solid fa-tv mr-1 text-gray-800"></i> Tempo em telas/TV</label>
                             <select name="tempo_tv" class="w-full border rounded px-3 py-2 text-sm toggle-other" data-target="tv_outro">
@@ -599,7 +568,6 @@
                             <input type="text" name="tv_outro" class="w-full px-3 py-2 mt-2 border border-gray-300 rounded text-sm other-input" placeholder="Detalhe...">
                         </div>
                         
-                        <!-- Escada vs Elevador -->
                         <div class="border border-gray-200 p-4 rounded-lg flex items-center justify-between hover:bg-gray-50 transition">
                             <div class="flex items-center gap-3">
                                 <div class="text-2xl text-primary animate-bounce">
@@ -621,20 +589,16 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 4: Alimentação (Título Alterado) -->
             <div class="step-content" data-step="4">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
-                    <!-- Título alterado com emoji de alimentos -->
                     <h2 class="text-2xl font-bold text-secondary mb-2 flex items-center gap-2">
                         <i class="fa-solid fa-utensils text-primary"></i> Alimentação
                     </h2>
-                    <!-- Texto descritivo alterado -->
                     <p class="text-gray-500 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
                         <i class="fa-solid fa-circle-info mr-2"></i>Descreva sua alimentação com detalhes.
                     </p>
 
                     <div class="space-y-4">
-                        <!-- Café -->
                         <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-mug-hot mr-1 text-orange-400"></i>Café da Manhã</label>
@@ -644,7 +608,6 @@
                             <textarea name="rec_cafe" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Ex: 2 ovos, café preto..."></textarea>
                         </div>
 
-                        <!-- Lanche Manhã -->
                         <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-apple-whole mr-1 text-red-400"></i>Lanche da Manhã</label>
@@ -654,7 +617,6 @@
                             <textarea name="rec_lanche1" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
                         </div>
 
-                        <!-- Almoço -->
                         <div class="border-l-4 border-green-500 rounded-r-xl p-3 bg-white shadow-sm">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-utensils mr-1 text-green-600"></i>Almoço</label>
@@ -664,7 +626,6 @@
                             <textarea name="rec_almoco" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Detalhe as quantidades..."></textarea>
                         </div>
 
-                        <!-- Lanche Tarde -->
                         <div class="border border-gray-200 rounded-xl p-3 bg-gray-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-cookie-bite mr-1 text-yellow-600"></i>Lanche da Tarde</label>
@@ -674,7 +635,6 @@
                             <textarea name="rec_lanche2" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
                         </div>
 
-                        <!-- Jantar -->
                         <div class="border-l-4 border-blue-500 rounded-r-xl p-3 bg-white shadow-sm">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-bowl-food mr-1 text-blue-600"></i>Jantar</label>
@@ -684,7 +644,6 @@
                             <textarea name="rec_jantar" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
                         </div>
 
-                        <!-- Ceia -->
                         <div class="border border-indigo-200 rounded-xl p-3 bg-indigo-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-indigo-700"><i class="fa-solid fa-moon mr-1"></i>Ceia (Antes de dormir)</label>
@@ -694,14 +653,12 @@
                             <textarea name="rec_ceia" rows="3" class="w-full p-2 bg-white rounded border border-indigo-100 text-sm resize-y" placeholder="Chá, fruta, iogurte?"></textarea>
                         </div>
 
-                        <!-- Beliscos -->
                         <div class="border border-red-200 rounded-xl p-3 bg-red-50">
                             <label class="font-bold text-sm text-red-700 block mb-1"><i class="fa-solid fa-hand-holding mr-1"></i>Beliscos / Extras</label>
                             <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
                             <textarea name="rec_beliscos" rows="3" class="w-full p-2 bg-white rounded border border-red-100 text-sm resize-y" placeholder="Balinhas, café com açúcar, provinhas enquanto cozinha..."></textarea>
                         </div>
 
-                         <!-- Pré Treino -->
                          <div class="border border-purple-200 rounded-xl p-3 bg-purple-50">
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-purple-700"><i class="fa-solid fa-dumbbell mr-1"></i>Pré-Treino (Se houver)</label>
@@ -710,20 +667,17 @@
                             <textarea name="rec_pretreino" rows="3" class="w-full p-2 bg-white rounded border border-purple-100 text-sm resize-y" placeholder="O que come antes de treinar?"></textarea>
                         </div>
 
-                        <!-- NOVO BLOCO: Hábitos de Preparo e Rotina -->
                         <div class="mt-8 border-t-2 border-dashed border-gray-200 pt-6">
                             <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center">
                                 <i class="fa-solid fa-fire-burner mr-2 text-primary"></i>Hábitos de Preparo e Rotina
                             </h3>
 
                             <div class="grid grid-cols-1 gap-5">
-                                <!-- Temperos -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Que tipos de tempero usa nas refeições?</label>
                                     <textarea name="habito_temperos" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none text-sm" placeholder="Ex: Sazon, Açafrão, Chimichurri, Alho, Sal..."></textarea>
                                 </div>
 
-                                <!-- Manteiga e Gordura de Cozinhar -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
                                         <label class="block text-sm font-medium text-yellow-800 mb-1">Usa Margarina ou Manteiga?</label>
@@ -743,9 +697,7 @@
                                     </div>
                                 </div>
 
-                                <!-- NOVOS CAMPOS: Frutas e Vegetais -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <!-- Frutas -->
                                     <div class="bg-green-50 p-3 rounded-lg border border-green-100">
                                         <label class="block text-sm font-medium text-green-800 mb-1"><i class="fa-solid fa-apple-whole mr-1"></i>Consumo de Frutas?</label>
                                         <select name="habito_frutas_check" class="w-full px-3 py-2 border border-green-200 rounded text-sm mb-1 toggle-yes-no" data-target="container_frutas">
@@ -758,7 +710,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Vegetais -->
                                     <div class="bg-green-50 p-3 rounded-lg border border-green-100">
                                         <label class="block text-sm font-medium text-green-800 mb-1"><i class="fa-solid fa-carrot mr-1"></i>Consumo de Vegetais/Salada?</label>
                                         <select name="habito_veg_check" class="w-full px-3 py-2 border border-green-200 rounded text-sm mb-1 toggle-yes-no" data-target="container_veg">
@@ -772,7 +723,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Queijo e Presunto -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                      <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
                                         <label class="block text-sm font-medium text-yellow-800 mb-1"><i class="fa-solid fa-cheese mr-1"></i>Consome Queijo?</label>
@@ -801,13 +751,11 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Bebidas -->
                                 <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
                                      <label class="block text-sm font-medium text-blue-800 mb-1"><i class="fa-solid fa-glass-water mr-1"></i>Bebida no momento das refeições (Almoço/Jantar)?</label>
                                      <input type="text" name="habito_bebida_refeicao" class="w-full px-3 py-2 border border-blue-200 rounded text-sm bg-white" placeholder="Ex: Refrigerante, sucos, água...">
                                 </div>
 
-                                <!-- Frituras -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Costuma comer fritura?</label>
                                     <div class="flex flex-col sm:flex-row gap-2">
@@ -821,7 +769,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Açúcar e Sal -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1"><i class="fa-solid fa-spoon mr-1"></i> Açúcar / Adoçante</label>
@@ -843,7 +790,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Logística (Marmita) -->
                                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                                     <h4 class="text-sm font-bold text-gray-700 mb-3">Rotina de Almoço e Trabalho</h4>
                                     
@@ -878,7 +824,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Auto-reflexão -->
                                 <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
                                     <label class="block text-sm font-medium text-blue-800 mb-2">
                                         <i class="fa-regular fa-lightbulb mr-1"></i> Auto-reflexão do Registro
@@ -893,7 +838,6 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 5: Preferências -->
             <div class="step-content" data-step="5">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
                     <h2 class="text-2xl font-bold text-secondary mb-2">Preferências</h2>
@@ -912,7 +856,6 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO 6: Industrializados & Fim de Semana -->
             <div class="step-content" data-step="6">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
                     <h2 class="text-2xl font-bold text-secondary mb-4">Industrializados & Fim de Semana</h2>
@@ -1012,55 +955,27 @@
                 </div>
             </div>
 
-             <!-- SEÇÃO 7: Finalização e LGPD -->
              <div class="step-content" data-step="7">
                 <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 hover-scale">
-                    <h2 class="text-2xl font-bold text-secondary mb-4">Espaço Livre & Finalização</h2>
-                    
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Algo mais que eu deva saber?</label>
-                        <textarea name="obs_finais" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none" placeholder="Use este espaço para escrever qualquer informação que você considere importante..."></textarea>
-                    </div>
-
-                    <!-- LGPD Box -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
-                        <div class="flex items-start gap-3">
-                            <div class="flex items-center h-5 checkbox-wrapper">
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="lgpd-consent" required class="sr-only peer">
-                                    <div class="w-5 h-5 border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center transition-all">
-                                        <svg class="w-3 h-3 text-white hidden pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="text-sm">
-                                <label for="lgpd-consent" class="font-medium text-gray-700 cursor-pointer">Consentimento de Uso de Dados</label>
-                                <p class="text-gray-500 text-xs mt-1 text-justify">
-                                    Declaro que as informações fornecidas são verdadeiras. Autorizo o uso destes dados exclusivamente para fins de elaboração do meu planejamento nutricional, conforme a Lei Geral de Proteção de Dados (LGPD).
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <h2 class="text-2xl font-bold text-secondary mb-4">Finalização</h2>
                     
                     <div class="flex flex-col gap-3 items-center justify-center">
-                         <!-- AVISO PISCANDO -->
                          <div class="blink-warning w-full text-red-600">
-                            Tudo pronto? Gere seu PDF abaixo e enviei para o profissional.<br>
-                            LEMBRANDO! Precisa enviar o para o seu nutricionista
+                            Tudo pronto? Gere seu PDF abaixo e envie para o profissional.<br>
+                            LEMBRANDO! Precisa enviar para o seu nutricionista
                          </div>
 
                          <button type="button" onclick="generateAndDownloadPDF()" class="w-full sm:w-auto bg-primary text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:bg-green-600 transition-all transform hover:scale-105 flex items-center justify-center gap-3 text-lg">
-                            <i class="fa-solid fa-file-pdf text-2xl"></i> Gerar e Enviar PDF
+                            <i class="fa-solid fa-file-pdf text-2xl"></i> Gerar e Enviar pelo WhatsApp
                          </button>
                          <div id="status-msg" class="text-sm font-medium mt-4 hidden text-green-600 bg-green-50 px-4 py-2 rounded-lg border border-green-200">
-                             <i class="fa-solid fa-check-circle mr-2"></i> Enviei para o seu nutricionista!
+                             <i class="fa-solid fa-check-circle mr-2"></i> Documento gerado com sucesso!
                          </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- Navegação -->
             <div class="mt-8 flex justify-between items-center max-w-3xl mx-auto pb-8">
                 <button type="button" id="prevBtn" onclick="changeStep(-1)" class="px-6 py-2 rounded-lg text-gray-600 hover:bg-gray-200 disabled:opacity-0 transition-all font-medium">
                     <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
@@ -1078,12 +993,9 @@
         <p>Desenvolvido por Rômulo F. Monteiro. Todos os direitos reservados.(Instagram: <a href="https://www.instagram.com/romulof.monteiro/" target="_blank" class="text-primary hover:underline">@romulof.monteiro</a>).</p>
     </footer>
 
-    <!-- Container Oculto para Geração do PDF -->
     <div id="pdf-container">
-        <!-- O conteúdo será injetado via JS -->
-    </div>
+        </div>
 
-    <!-- Lógica da Aplicação -->
     <script>
         // --- 0. PERSISTÊNCIA DE DADOS (LOCAL STORAGE) ---
         
@@ -1526,27 +1438,10 @@
                 </div>
             `;
 
-            // 7. Obs Finais
-            html += `
-                <div class="pdf-section">
-                    <h2>7. Observações Finais</h2>
-                    <p>${val('obs_finais')}</p>
-                    <p style="margin-top:20px; font-size:10px; color:#888;">
-                        * O paciente declarou consentimento LGPD na data de geração deste documento.
-                        <br>Desenvolvido por Rômulo F. Monteiro.
-                    </p>
-                </div>
-            `;
-
             container.innerHTML = html;
         }
 
         function generateAndDownloadPDF() {
-            if(!document.getElementById('lgpd-consent').checked) {
-                alert("Por favor, aceite os termos da LGPD antes de gerar o PDF.");
-                return;
-            }
-
             preparePDFContent();
             
             const element = document.getElementById('pdf-container');
@@ -1569,14 +1464,38 @@
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
+            // Gera o PDF como Blob e abre as opções de envio (Web Share API)
+            html2pdf().set(opt).from(element).outputPdf('blob').then((pdfBlob) => {
                 element.style.display = 'none';
                 btn.innerHTML = originalText;
                 btn.disabled = false;
                 
-                // Mensagem de sucesso solicitada
                 statusMsg.classList.remove('hidden');
                 statusMsg.classList.add('block', 'animate-pulse');
+
+                const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
+
+                // Tenta usar a Web Share API (Nativo em Celulares para abrir direto o WhatsApp)
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: 'Anamnese Nutricional',
+                        text: 'Olá! Segue em anexo a minha anamnese nutricional.'
+                    }).catch((err) => {
+                        console.log('Compartilhamento cancelado ou falhou:', err);
+                    });
+                } else {
+                    // Fallback para download se o navegador não suportar o envio (ex: Computador)
+                    const url = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = opt.filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    alert('Seu dispositivo ou navegador não suporta o envio direto. O arquivo PDF foi baixado automaticamente. Por favor, envie-o manualmente pelo WhatsApp.');
+                }
             });
         }
 
