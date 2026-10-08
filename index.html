@@ -161,6 +161,17 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
                             <input type="text" name="nome" required class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors placeholder-gray-400" placeholder="Ex: Maria da Silva">
                         </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                                <input type="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors placeholder-gray-400" placeholder="seuemail@exemplo.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Número de Contato / WhatsApp</label>
+                                <input type="tel" name="telefone" class="w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors placeholder-gray-400" placeholder="(00) 90000-0000">
+                            </div>
+                        </div>
                         
                         <div class="grid grid-cols-3 gap-3">
                             <div>
@@ -594,8 +605,8 @@
                     <h2 class="text-2xl font-bold text-secondary mb-2 flex items-center gap-2">
                         <i class="fa-solid fa-utensils text-primary"></i> Alimentação
                     </h2>
-                    <p class="text-gray-500 mb-6 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400 text-sm">
-                        <i class="fa-solid fa-circle-info mr-2"></i>Descreva sua alimentação com detalhes, será muito importante para elaboração da sua dieta.
+                    <p class="text-gray-600 mb-6 bg-yellow-50 p-3.5 rounded-lg border-l-4 border-yellow-400 text-sm leading-relaxed">
+                        <i class="fa-solid fa-lightbulb text-yellow-600 mr-2"></i><strong>Aviso:</strong> O preenchimento de todas as refeições e opções adicionais é opcional. Porém, pedimos que <strong>preencha com o máximo possível de detalhes</strong> (alimentos, marcas, quantidades), pois isso vai ajudar muito na construção de uma dieta ideal para você!
                     </p>
 
                     <div class="space-y-4">
@@ -603,16 +614,16 @@
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-mug-hot mr-1 text-orange-400"></i>Café da Manhã</label>
                             </div>
-                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar? (Lembre-se de detalhar o máximo possível)</p>
                             <textarea name="rec_cafe" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Ex: 2 ovos, café preto..."></textarea>
                             
                             <div id="extra_cafe_1" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no café da manhã:</p>
-                                <textarea name="rec_cafe_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no café da manhã (opcional):</p>
+                                <textarea name="rec_cafe_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Opção 2 (Opcional - detalhe se puder)..."></textarea>
                             </div>
                             <div id="extra_cafe_2" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no café da manhã:</p>
-                                <textarea name="rec_cafe_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no café da manhã (opcional):</p>
+                                <textarea name="rec_cafe_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Opção 3 (Opcional - detalhe se puder)..."></textarea>
                             </div>
 
                             <div class="mt-3 p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -695,16 +706,16 @@
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-apple-whole mr-1 text-red-400"></i>Lanche da Manhã</label>
                             </div>
-                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar? (Detalhamento voluntário)</p>
                             <textarea name="rec_lanche1" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
                             
                             <div id="extra_lanche1_1" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da manhã:</p>
-                                <textarea name="rec_lanche1_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da manhã (opcional):</p>
+                                <textarea name="rec_lanche1_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Opção 2 (Opcional - detalhe se puder)..."></textarea>
                             </div>
                             <div id="extra_lanche1_2" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da manhã:</p>
-                                <textarea name="rec_lanche1_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da manhã (opcional):</p>
+                                <textarea name="rec_lanche1_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Opção 3 (Opcional - detalhe se puder)..."></textarea>
                             </div>
                         </div>
 
@@ -712,16 +723,16 @@
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-utensils mr-1 text-green-600"></i>Almoço</label>
                             </div>
-                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
-                            <textarea name="rec_almoco" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Detalhe as quantidades..."></textarea>
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar? (Preencha com o máximo de detalhes possível)</p>
+                            <textarea name="rec_almoco" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Detalhe as quantidades, alimentos e preparo..."></textarea>
                             
                             <div id="extra_almoco_1" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no almoço:</p>
-                                <textarea name="rec_almoco_op2" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no almoço (opcional):</p>
+                                <textarea name="rec_almoco_op2" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Opção 2 (Opcional - detalhe se puder)..."></textarea>
                             </div>
                             <div id="extra_almoco_2" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no almoço:</p>
-                                <textarea name="rec_almoco_op3" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no almoço (opcional):</p>
+                                <textarea name="rec_almoco_op3" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Opção 3 (Opcional - detalhe se puder)..."></textarea>
                             </div>
 
                             <div class="mt-3 p-3 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
@@ -807,16 +818,16 @@
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-cookie-bite mr-1 text-yellow-600"></i>Lanche da Tarde</label>
                             </div>
-                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar? (Detalhe se possível)</p>
                             <textarea name="rec_lanche2" rows="3" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
                             
                             <div id="extra_lanche2_1" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da tarde:</p>
-                                <textarea name="rec_lanche2_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da tarde (opcional):</p>
+                                <textarea name="rec_lanche2_op2" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Opção 2 (Opcional - detalhe se puder)..."></textarea>
                             </div>
                             <div id="extra_lanche2_2" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da tarde:</p>
-                                <textarea name="rec_lanche2_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no lanche da tarde (opcional):</p>
+                                <textarea name="rec_lanche2_op3" rows="2" class="w-full p-2 bg-white rounded border border-gray-200 text-sm resize-y" placeholder="Opção 3 (Opcional - detalhe se puder)..."></textarea>
                             </div>
 
                             <div class="mt-3 p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -878,16 +889,16 @@
                             <div class="flex justify-between mb-1">
                                 <label class="font-bold text-sm text-gray-700"><i class="fa-solid fa-bowl-food mr-1 text-blue-600"></i>Jantar</label>
                             </div>
-                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar?</p>
+                            <p class="text-xs text-gray-500 italic mb-1">O que comeu ontem? O que costuma comer? O que não pode faltar? (Tente detalhar bastante)</p>
                             <textarea name="rec_jantar" rows="3" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
                             
                             <div id="extra_jantar_1" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no jantar:</p>
-                                <textarea name="rec_jantar_op2" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no jantar (opcional):</p>
+                                <textarea name="rec_jantar_op2" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Opção 2 (Opcional - detalhe se puder)..."></textarea>
                             </div>
                             <div id="extra_jantar_2" style="display: none;" class="mt-2">
-                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no jantar:</p>
-                                <textarea name="rec_jantar_op3" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y"></textarea>
+                                <p class="text-xs text-gray-500 italic mb-1">Escreva aqui outra opção que costuma comer no jantar (opcional):</p>
+                                <textarea name="rec_jantar_op3" rows="2" class="w-full p-2 bg-gray-50 rounded border border-gray-200 text-sm resize-y" placeholder="Opção 3 (Opcional - detalhe se puder)..."></textarea>
                             </div>
 
                             <div class="mt-3 p-3 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
@@ -1486,7 +1497,7 @@
             });
         });
 
-        // --- 1.1 LOGICA DE OPÇÕES DE REFEIÇÃO EXTRAS ---
+        // --- 1.1 LOGICA DE OPÇÕES DE REFEIÇÃO EXTRAS (OPCIONAIS) ---
         const setupMealVisibility = () => {
             const mealsToSetup = ['cafe', 'lanche1', 'almoco', 'lanche2', 'jantar'];
             mealsToSetup.forEach(meal => {
@@ -1498,26 +1509,24 @@
 
                 if(mainInput && op2Input && op3Input) {
                     const checkVisibility = () => {
-                        // Verifica se o input principal (o de ontem) tem texto
+                        // Exibe opção 2 se a principal for preenchida (totalmente opcional)
                         if(mainInput.value.trim() !== '') {
                             extra1.style.display = 'block';
-                            op2Input.setAttribute('required', 'required');
                         } else {
                             extra1.style.display = 'none';
-                            op2Input.removeAttribute('required');
-                            
                             extra2.style.display = 'none';
-                            op3Input.removeAttribute('required');
                         }
 
-                        // Verifica se a opção 2 tem texto e o principal também
+                        // Exibe opção 3 se a opção 2 for preenchida (totalmente opcional)
                         if(op2Input.value.trim() !== '' && mainInput.value.trim() !== '') {
                             extra2.style.display = 'block';
-                            op3Input.setAttribute('required', 'required');
                         } else {
                             extra2.style.display = 'none';
-                            op3Input.removeAttribute('required');
                         }
+
+                        // Garante que não sejam obrigatórias
+                        op2Input.removeAttribute('required');
+                        op3Input.removeAttribute('required');
                     };
 
                     mainInput.addEventListener('input', checkVisibility);
@@ -1743,6 +1752,7 @@
                 <div class="pdf-section">
                     <h2>1. Dados Pessoais</h2>
                     <p><strong>Nome:</strong> ${val('nome')} | <strong>Idade:</strong> ${val('idade')} anos</p>
+                    <p><strong>E-mail:</strong> ${val('email')} | <strong>Telefone/WhatsApp:</strong> ${val('telefone')}</p>
                     <p><strong>Moradia:</strong> ${val('moradia')}</p>
                     <p><strong>Altura:</strong> ${val('altura')} cm | <strong>Peso:</strong> ${val('peso')} kg</p>
                 </div>
